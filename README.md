@@ -24,7 +24,7 @@ Fonte: `documento-base/Paradigmas/` · **Formato dos resumos: [`definicoes/TEMPL
 
 - [ ] 01 Fundamentos
 - [x] 02 Programação Lógica (aulas 1-6)
-- [x] 03 Combinadores — aula 01 (introdução)
+- [x] 03 Combinadores — aulas 01 (introdução) e 02 (base SK)
 - [ ] 04 Cálculo Lambda
 - [ ] 05 Programação Funcional
 - [ ] 06 Programação Vetorial

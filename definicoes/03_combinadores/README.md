@@ -4,7 +4,8 @@
 
 ## Resumos
 
-- [ ] A definir...
+- [x] Aula 01: Introdução (`03.aula_01_introducao_combinadores.md`)
+- [x] Aula 02: Base SK (`03.aula_02_base_sk.md`)
 
 ## Imagens
 
