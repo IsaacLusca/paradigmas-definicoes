@@ -8,7 +8,6 @@
 (c) O gabarito deve ser marcado **à caneta**. Marcação à lápis, com rasuras, em branco ou com
 múltiplas alternativas assinaladas recebe pontuação zero.
 (d) Nas questões abertas (Parte B), marque a resposta no formato **CDU** (centena, dezena, unidade).
-(e) Na Parte C, escreva o código Prolog.
 
 **Parte A.** Assinale a alternativa correta. Cada marcação correta vale 2 pontos.
 
@@ -109,14 +108,42 @@ representar qual função particular?
 (D) `abc`
 (E) `a(bc)`
 
+**Q11.** Considere o predicado abaixo:
+```prolog
+p(1, 0).
+p(N, K) :-
+    N > 1,
+    0 =:= N mod 3,
+    M is N div 3,
+    p(M, K1),
+    K is K1 + 1.
+```
+Qual é o resultado da consulta `?- p(81, K).`?
+(A) K = 3.
+(B) K = 4.
+(C) K = 5.
+(D) K = 6.
+(E) false.
+
+**Q12.** Considere o predicado abaixo:
+```prolog
+soma(N) :-
+    between(1, N, A),
+    between(A, N, B),
+    A < B,
+    N =:= A + B.
+```
+Quantas **soluções distintas** produz a consulta `?- soma(5).`?
+(A) 0 (B) 1 (C) 2 (D) 3 (E) 4
+
 ---
 
-**Parte B.** Resolva as questões a seguir. Cada questão correta vale 2 pontos (resposta em CDU).
+**Parte B.** Resolva as questões a seguir. Cada questão correta vale 3 pontos (resposta em CDU).
 
-**Q11.** Qual é o número de linhas da tabela-verdade da proposição composta abaixo?
+**Q13.** Qual é o número de linhas da tabela-verdade da proposição composta abaixo?
 $$P : (p \land \lnot q) \lor (\lnot p \to (q \land r))$$
 
-**Q12.** Quantas são as **regras** definidas no código Prolog abaixo?
+**Q14.** Quantas são as **regras** definidas no código Prolog abaixo?
 ```prolog
 1  p(a).
 2  p(b).
@@ -129,32 +156,6 @@ $$P : (p \land \lnot q) \lor (\lnot p \to (q \land r))$$
 
 ---
 
-**Parte C.** Implemente, em Prolog, os predicados descritos a seguir. Cada implementação correta
-vale 3 pontos.
-
-**Q13.** O predicado `is_sum_of_4/1` recebe como argumento um inteiro positivo $N$ e retorna
-verdadeiro somente quando $N$ pode ser escrito como a soma de **quatro inteiros positivos
-distintos**.
-Exemplos:
-```prolog
-?- is_sum_of_4(10).     % true  (1+2+3+4)
-?- is_sum_of_4(9).      % false
-?- is_sum_of_4(100).    % true
-```
-
-**Q14.** O predicado `power_of_3/1` recebe como argumento um inteiro positivo $N$ e retorna
-verdadeiro somente quando $N$ pode ser escrito na forma $3^k$, onde $k$ é um inteiro
-não-negativo.
-Exemplos:
-```prolog
-?- power_of_3(1).       % true
-?- power_of_3(81).      % true
-?- power_of_3(100).     % false
-```
-
----
-
-**Folha de respostas (modelo):** Q1–Q10 (marque A–E) · Q11 e Q12 em CDU (C, D, U) ·
-Q13 e Q14 escritas no espaço de código.
+**Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_1_GABARITO.md`](SIMULADO_1_GABARITO.md).

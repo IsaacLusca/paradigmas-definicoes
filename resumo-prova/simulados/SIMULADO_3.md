@@ -8,12 +8,11 @@
 (c) O gabarito deve ser marcado **à caneta**. Marcação à lápis, com rasuras, em branco ou com
 múltiplas alternativas assinaladas recebe pontuação zero.
 (d) Nas questões abertas (Parte B), marque a resposta no formato **CDU** (centena, dezena, unidade).
-(e) Na Parte C, escreva o código Prolog.
 
 **Parte A.** Assinale a alternativa correta. Cada marcação correta vale 2 pontos.
 
-**Q1.** Qual conectivo da lógica proposicional booleana é **falso apenas quando as duas
-proposições são verdadeiras**?
+**Q1.** Qual conectivo da lógica proposicional booleana é **falso apenas quando** as duas
+proposições são verdadeiras?
 (A) negação conjunta (NOR, $\downarrow$)
 (B) negação disjunta (NAND, $\uparrow$)
 (C) conjunção
@@ -94,51 +93,59 @@ Qual é o resultado da consulta `?- acc([1, 2, 3, 4], 0, X).`?
 (D) `K a b`
 (E) `S K K a`
 
----
-
-**Parte B.** Resolva as questões a seguir. Cada questão correta vale 2 pontos (resposta em CDU).
-
-**Q11.** Quantas **cláusulas** existem no código Prolog abaixo?
+**Q11.** Considere o predicado abaixo:
 ```prolog
-1 filme('Matrix', 1999).
-2 filme('Interestelar', 2014).
-3 filme('Duna', 2021).
-4 diretor('Matrix', 'Wachowski').
-5 diretor('Interestelar', 'Nolan').
-6 classico(X) :- filme(X, A), A < 2000.
-7 recente(X) :- filme(X, A), A >= 2020.
-8 indicado(X, Y) :- filme(X, _), diretor(X, Y).
+maior([X], X).
+maior([H|T], X) :-
+    maior(T, Y),
+    (H > Y -> X = H ; X = Y).
 ```
+Qual é o resultado da consulta `?- maior([4, 9, 2, 9], X).`?
+(A) X = 2.
+(B) X = 4.
+(C) X = 9.
+(D) false.
+(E) [4, 9, 2, 9].
 
-**Q12.** Aplique a redução-β em `SKS34`, em que $Sfgx = fx(gx)$ e $Kxy = x$ e cada dígito
-decimal representa um termo independente. A resposta deve ser a concatenação dos dígitos
-remanescentes, na ordem obtida (marque em CDU).
-
----
-
-**Parte C.** Implemente, em Prolog, os predicados descritos a seguir. Cada implementação correta
-vale 3 pontos.
-
-**Q13.** O predicado `max_list/2` recebe como primeiro argumento uma lista **não vazia** de
-inteiros e unifica o segundo argumento com o **maior elemento** da lista.
-Exemplos:
+**Q12.** Considere o predicado abaixo:
 ```prolog
-?- max_list([3, 7, 2], X).       % X = 7
-?- max_list([9], X).             % X = 9
-?- max_list([1, 1, 1], X).       % X = 1
+nd(N, X) :- nd_(N, 1, 0, X).
+nd_(N, D, A, X) :-
+    D =< N,
+    (0 =:= N mod D -> B is A + 1 ; B = A),
+    D1 is D + 1,
+    nd_(N, D1, B, X).
+nd_(_, D, A, A) :- D > N.
 ```
-
-**Q14.** O predicado `num_divisors/2` recebe como primeiro argumento um inteiro positivo $N$ e
-unifica o segundo argumento com a **quantidade de divisores positivos** de $N$.
-Exemplos:
-```prolog
-?- num_divisors(6, X).       % X = 4  (1, 2, 3, 6)
-?- num_divisors(7, X).       % X = 2  (1, 7)
-```
+Qual é o resultado da consulta `?- nd(12, X).`?
+(A) X = 4.
+(B) X = 5.
+(C) X = 6.
+(D) X = 8.
+(E) X = 12.
 
 ---
 
-**Folha de respostas (modelo):** Q1–Q10 (marque A–E) · Q11 e Q12 em CDU (C, D, U) ·
-Q13 e Q14 escritas no espaço de código.
+**Parte B.** Resolva as questões a seguir. Cada questão correta vale 3 pontos (resposta em CDU).
+
+**Q13.** Quantas **cláusulas** existem no código Prolog abaixo? (Cláusulas = fatos + regras.)
+```prolog
+1  filme('Matrix', 1999).
+2  filme('Interestelar', 2014).
+3  filme('Duna', 2021).
+4  diretor('Matrix', 'Wachowski').
+5  diretor('Interestelar', 'Nolan').
+6  classico(X) :- filme(X, A), A < 2000.
+7  recente(X) :- filme(X, A), A >= 2020.
+8  indicado(X, Y) :- filme(X, _), diretor(X, Y).
+```
+
+**Q14.** Aplique a redução-β em `SKS34`, em que $Sfgx = fx(gx)$ e $Kxy = x$ e cada dígito
+decimal representa um termo independente. Marque em CDU a concatenação dos dígitos
+remanescentes, na ordem obtida.
+
+---
+
+**Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_3_GABARITO.md`](SIMULADO_3_GABARITO.md).

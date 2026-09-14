@@ -10,18 +10,29 @@
 
 ## 0. Como a prova é montada (leia isto primeiro)
 
-**Formato (Prova 1 — código 4BAE41):**
+> **Aviso (informação de aula):** segundo o professor, **não haverá escrita de código** nesta prova —
+> no máximo **código para analisar** (traço/resultado de consultas, contagem, reduções). Por isso os
+> **simulados** foram ajustados para o formato abaixo (12 MC + 2 abertas, 30 pts), cobrindo o mesmo
+> conteúdo da prova original.
+
+**Formato dos simulados (`resumo-prova/simulados/` e `simulador.html`):**
 
 | Parte | Questões | Valor | O que cobra |
 |---|---|---|---|
-| **A** | 10 múltipla escolha (5 alternativas) | 2 pts cada | Conceito + **leitura de código** (traço de execução, unificação, aritmética) |
-| **B** | 2 questões abertas (Q11–Q12) | 2 pts cada | Resposta numérica/curta marcada em **CDU** (centena, dezena, unidade) |
-| **C** | 2 questões de código (Q13–Q14) | 3 pts cada | **Implementar um predicado Prolog** à caneta |
+| **A** | 12 múltipla escolha (5 alternativas) | 2 pts cada | Conceito + **análise de código** (traço de execução, unificação, aritmética, combinadores) |
+| **B** | 2 questões abertas (Q13–Q14) | 3 pts cada | Resposta numérica/curta em **CDU** (centena, dezena, unidade) |
+
+**Formato da Prova 1 aplicada (código 4BAE41), para referência:**
+
+| Parte | Questões | Valor | O que cobrava |
+|---|---|---|---|
+| **A** | 10 múltipla escolha | 2 pts cada | Conceito + leitura de código |
+| **B** | 2 abertas (Q11–Q12) | 2 pts cada | Resposta em **CDU** |
+| **C** | 2 implementações (Q13–Q14) | 3 pts cada | Escrever predicado Prolog (não haverá nesta prova) |
 
 **Regras do jogo:**
 - Gabarito **à caneta** (lápis/rasura = zero).
-- O gabarito da Parte B é em **CDU**: ex., resposta `4` → C=0, D=0, U=4; resposta `23` → C=0, D=2, U=3.
-- Na Parte C, escreva o código no verso da folha, indicando a questão.
+- O gabarito da Parte B é em **CDU**: ex., resposta `4` → C=0, D=0, U=4; resposta `23` → C=0, D=2, U=3; resposta `370` → C=3, D=7, U=0.
 - Interpretação do enunciado faz parte da avaliação.
 
 **Gabarito da Prova 1 (4BAE41):** `E B A A A D A C B A | 004 | 003 | is_sum_of_5 | power_of_5`
@@ -465,7 +476,7 @@ $$SKSabc = ((SKS)a)bc = (Ka(Sa))bc = abc \;\rightarrow\; \mathbf{E}$$
 
 ---
 
-## 9. PARTE C: padrões de implementação (o que mais vale pontos)
+## 9. Padrões de implementação (para **ler e entender** código)
 
 ### 9.1. Receita geral para os predicados da prova
 
@@ -637,7 +648,8 @@ grandmother(X, Y) :- mother(X, P), (father(P, Y) ; mother(P, Y)).
 - [ ] Definição de combinador ($FV(M)=\emptyset$)
 - [ ] Reduções: `SKSabc = abc`, dígitos → `370`, $(ab)(ab)$, `cK`
 - [ ] NAND/NOR gerando tudo; conectivo fundamental de Schönfinkel
-- [ ] Os 4 padrões de implementação (seção 9): between+ordenado, divisão recursiva, acumulador, `fail`+base
+- [ ] Reconhecer no código os 4 padrões (seção 9): between+ordenado, divisão recursiva, acumulador, contagem com `mod`/condicional
+- [ ] Fazer os 3 simulados fechado (no `simulador.html`) e revisar cada erro
 
 ---
 
@@ -645,6 +657,7 @@ grandmother(X, Y) :- mother(X, P), (father(P, Y) ; mother(P, Y)).
 - `definicoes/02_programacao_logica/` — resumos detalhados das 6 aulas (com códigos)
 - `definicoes/03_combinadores/` — Introdução e Base SK
 - `resumo-prova/simulados/` — **3 simulados** no estilo da prova + gabaritos resolvidos
+- `resumo-prova/simulador.html` — **simulador interativo** (abra no navegador): corrige e mostra o gabarito na hora
 - `resumo-prova/prova_1/` — prova e gabarito (4BAE41)
 - `resumo-prova/prova_2/` — prova e gabarito (704C60)
 - `resumo-prova/listas/` — listas de Programação Lógica e Combinadores

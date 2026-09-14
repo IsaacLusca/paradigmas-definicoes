@@ -8,7 +8,6 @@
 (c) O gabarito deve ser marcado **à caneta**. Marcação à lápis, com rasuras, em branco ou com
 múltiplas alternativas assinaladas recebe pontuação zero.
 (d) Nas questões abertas (Parte B), marque a resposta no formato **CDU** (centena, dezena, unidade).
-(e) Na Parte C, escreva o código Prolog.
 
 **Parte A.** Assinale a alternativa correta. Cada marcação correta vale 2 pontos.
 
@@ -103,14 +102,45 @@ Qual é o resultado da consulta `?- mdc(48, 18, X).`?
 (D) $S(KS)K$
 (E) $BBB$
 
+**Q11.** Considere o predicado abaixo:
+```prolog
+conta([], 0).
+conta([H|T], X) :-
+    conta(T, Y),
+    (0 =:= H mod 2 -> X is Y + 1 ; X = Y).
+```
+Qual é o resultado da consulta `?- conta([2, 3, 4, 5, 6], X).`?
+(A) X = 0.
+(B) X = 2.
+(C) X = 3.
+(D) X = 4.
+(E) X = 5.
+
+**Q12.** Considere o predicado abaixo:
+```prolog
+p(1, 0).
+p(N, K) :-
+    N > 1,
+    0 =:= N mod 2,
+    M is N div 2,
+    p(M, K1),
+    K is K1 + 1.
+```
+Qual é o resultado da consulta `?- p(64, K).`?
+(A) K = 4.
+(B) K = 5.
+(C) K = 6.
+(D) K = 7.
+(E) false.
+
 ---
 
-**Parte B.** Resolva as questões a seguir. Cada questão correta vale 2 pontos (resposta em CDU).
+**Parte B.** Resolva as questões a seguir. Cada questão correta vale 3 pontos (resposta em CDU).
 
-**Q11.** Qual é o número de linhas da tabela-verdade da proposição composta abaixo?
+**Q13.** Qual é o número de linhas da tabela-verdade da proposição composta abaixo?
 $$P : \lnot(p \land q) \leftrightarrow (\lnot p \lor \lnot q)$$
 
-**Q12.** Quantas são as **regras** definidas no código Prolog abaixo?
+**Q14.** Quantas são as **regras** definidas no código Prolog abaixo?
 ```prolog
 1  a(1).
 2  b(2).
@@ -121,31 +151,6 @@ $$P : \lnot(p \land q) \leftrightarrow (\lnot p \lor \lnot q)$$
 
 ---
 
-**Parte C.** Implemente, em Prolog, os predicados descritos a seguir. Cada implementação correta
-vale 3 pontos.
-
-**Q13.** O predicado `count_odds/2` recebe como primeiro argumento uma lista de inteiros e unifica
-o segundo argumento com a **quantidade de números ímpares** presentes na lista.
-Exemplos:
-```prolog
-?- count_odds([1, 2, 3, 4], X).       % X = 2
-?- count_odds([2, 4, 6], X).          % X = 0
-?- count_odds([], X).                 % X = 0
-```
-
-**Q14.** O predicado `power_of_2/1` recebe como argumento um inteiro positivo $N$ e retorna
-verdadeiro somente quando $N$ pode ser escrito na forma $2^k$, onde $k$ é um inteiro
-não-negativo.
-Exemplos:
-```prolog
-?- power_of_2(1).       % true
-?- power_of_2(64).      % true
-?- power_of_2(100).     % false
-```
-
----
-
-**Folha de respostas (modelo):** Q1–Q10 (marque A–E) · Q11 e Q12 em CDU (C, D, U) ·
-Q13 e Q14 escritas no espaço de código.
+**Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_2_GABARITO.md`](SIMULADO_2_GABARITO.md).

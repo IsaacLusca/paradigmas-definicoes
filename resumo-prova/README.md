@@ -8,12 +8,13 @@ Material de estudo para as provas de Paradigmas de Programação.
 resumo-prova/
 ├── estudo/
 │   └── RESUMO_PROVA_1.md      ← RESUMO GERAL ÚNICO para a Prova 1 (comece por aqui)
+├── simulador.html             ← simulador interativo dos 3 simulados (abra no navegador)
 ├── simulados/
-│   ├── SIMULADO_1.md          ← simulado no estilo da prova
+│   ├── SIMULADO_1.md          ← simulado no estilo da prova (12 MC + 2 abertas)
 │   ├── SIMULADO_1_GABARITO.md ← gabarito comentado
 │   ├── SIMULADO_2.md
 │   ├── SIMULADO_2_GABARITO.md
-│   ├── SIMULADO_3.md          ← cobre o restante (dinâmicos, estruturas, meta-predicados, NAND, SK)
+│   ├── SIMULADO_3.md
 │   └── SIMULADO_3_GABARITO.md
 ├── prova_1/
 │   ├── prova_1_4BAE41.pdf     ← Prova 1 aplicada (Prolog + lógica)
@@ -35,5 +36,6 @@ resumo-prova/
 - **Combinadores:** Introdução e Base SK (partes da antiga Prova 2).
 - **Não cai:** Cálculo Lambda e Haskell.
 
-> Formato da prova: Parte A (10 múltipla escolha, 2 pts), Parte B (abertas em CDU, 2 pts),
-> Parte C (implementar predicados, 3 pts). Veja a seção 0 do `estudo/RESUMO_PROVA_1.md`.
+> **Formato (avisado em aula): sem escrita de código** — no máximo código para analisar.
+> Simulados: Parte A (12 múltipla escolha, 2 pts) + Parte B (2 abertas em CDU, 3 pts) = 30 pts.
+> Veja a seção 0 do `estudo/RESUMO_PROVA_1.md`.
