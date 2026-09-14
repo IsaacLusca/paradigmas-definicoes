@@ -1,4 +1,4 @@
-﻿# 01_fundamentos
+# 01_fundamentos
 
 > Fundamentos (introducao, funcoes, logica_booleana, teoria_dos_conjuntos) - fonte: Fundamentos/
 
