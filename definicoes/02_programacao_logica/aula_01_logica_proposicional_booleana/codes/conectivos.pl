@@ -10,3 +10,5 @@ or(false, true).
 not(false).
 
 teste(True, true).
+
+teste2(true, true, false).
