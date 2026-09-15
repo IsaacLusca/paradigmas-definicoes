@@ -382,12 +382,18 @@ unb2(X) :- darcy(X).
 | Predicado | Significado | Exemplo |
 |---|---|---|
 | `=` | **unifica** (sintático, não calcula) | `2 + 2 = 4` → **false** |
+| `==` | **mesmo termo** (identidade; não liga) | `1+2 == 1+2` → true · `X == 3` → false |
+| `\==` | **não** é o mesmo termo | `1+2 \== 3` → true |
 | `\=` | verdadeiro se **não unifica** | `a \= b` → true |
 | `\+` | negação por falha (não há prova) | `\+ member(x, [])` → true |
 | `is` | **avalia** expressão e ata | `X is 2+2` → `X = 4` |
 | `=:=` | comparação de **valor** | `2 + 2 =:= 4` → **true** |
 | `=\=` | diferente em **valor** | `2 + 2 =\= 5` → true |
 
+- **`=` × `==` × `=:=` (pegadinha):** `10 = 10`, `10 == 10` e `10 =:= 10` dão todos `true`
+  (é o mesmo número), **mas** `1+2 = 3` e `1+2 == 3` são `false` enquanto `1+2 =:= 3` é `true`;
+  e `10 =:= 10.0` é `true` (valor) mesmo com `10 = 10.0` sendo `false` (tipo).
+  **`=` casa/liga · `==` compara a forma · `=:=` calcula o valor.**
 - **(Q9 — Prova 1):** "não unifica" → **`\=`** (B). *`\+` nega um objetivo, não compara dois termos.*
 - **Negação por falha (`\+/1`):** `\+ G` é verdadeiro quando **não há prova** de `G`
   (não é "falso lógico", é "falha em provar"). É um **predicado de controle traduzido
