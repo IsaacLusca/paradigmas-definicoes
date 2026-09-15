@@ -103,7 +103,7 @@ As questões de λ puro (Q4, Q5, Q12) e Haskell (Q6–Q11, Q14–Q16) **não** e
 | **Predicado ↔ conectivo** em mundo fechado | Q2: `op(true, true).` (único fato) → **conjunção** |
 | **Predicado não é função** (controle × aninhamento) | `and(or(true,false),true)` → `false`; `(false ; true), true` → `true` |
 
-Consultas e resultados (arquivo executável: `definicoes/02_programacao_logica/aula_01_logica_proposicional_booleana/codes/proposicoes_compostas.pl` — rode `?- demo.` para as tabelas completas):
+Consultas e resultados (entradas e saídas esperadas no listener):
 
 | Consulta | Resultado |
 |---|---|
@@ -115,7 +115,7 @@ Consultas e resultados (arquivo executável: `definicoes/02_programacao_logica/a
 | `?- ((false ; true), true).` | `true` |
 | `?- and(or(true, false), true).` | `false` |
 
-Mais casos — transcrição `?- sessao.` (foco nos **operadores de controle**):
+Mais casos dos **operadores de controle** (mesmo formato):
 
 ```prolog
 ?- true.                    % --- constantes de controle ---
@@ -305,8 +305,7 @@ unb2(X) :- darcy(X).
   por unificação. `and(or(true,false),true)` dá `false` porque o termo composto
   `or(...)` **não casa** com nenhum fato (não há "avaliação aninhada" como em Python).
   E `True` (maiúscula) é **variável livre** → busca infinita, não o valor verdadeiro.
-  *(Para as tabelas de consulta→resultado dos conectivos de controle, veja a seção 1.1b e o
-  arquivo `codes/proposicoes_compostas.pl`.)*
+  *(Consultas e resultados dos conectivos de controle: seção 1.1b.)*
 
 ### 2.3b. Quantificadores: o que a consulta significa
 
@@ -578,7 +577,7 @@ $2 + 3 = 5$ → **A** (`Y = 5`).
 > **`:-` (1200) tem dois papéis:** **regra** (`cabeça :- corpo`, **xfx** — ler "cabeça SE corpo";
 > o corpo **implica** a cabeça: `corpo → cabeça`) e **diretiva** (`:- Objetivo.`, **fx** — roda ao
 > carregar o arquivo, ex.: `:- op(...)`, `:- dynamic p/1`, `:- use_module(...)`). E `?-` (fx, 1200)
-> é a **consulta** do listener. Demo: `codes/precedencia_conectivos.pl` (`?- demo.`, seção 6).
+> é a **consulta** do listener.
 
 > **Notação de tipo (`f`, `x`, `y`)** — é padrão do Prolog. `f` = posição do **operador**
 > (`a Op b` → `xfy`); **`x`** = lado com precedência **estritamente menor** (não aceita o mesmo
@@ -588,8 +587,7 @@ $2 + 3 = 5$ → **A** (`Y = 5`).
 > - `xfy` = associa **à direita** (`,` `;` `->` `:-` `^` → `2^3^2` = `2^(3^2)` = **512**);
 > - `yfx` = associa **à esquerda** (`+` `-` `*` `/` → `10-2-3` = `(10-2)-3` = **5**);
 > - `fy`/`fx` = **prefixo** (`\+`; `:-` diretiva); `yf`/`xf` = pós-fixo (raro).
->
-> Demo com árvores canônicas: `codes/tipos_operadores.pl` (`?- demo.`) — seção 5.1 da aula 01.
+>   Para conferir na prática: `?- Y is 2 ^ 3 ^ 2.` → `Y = 512`; `?- Y is 10 - 2 - 3.` → `Y = 5`.
 
 ### 5.2. Declarar operadores (Q4!)
 
@@ -1178,7 +1176,7 @@ q(0).                 % fato  → cláusula 4
 
 - [ ] Tabela dos conectivos (símbolos e definição de cada um)
 - [ ] Nº de linhas da tabela-verdade = $2^n$ (só variáveis **distintas** contam)
-- [ ] Proposições compostas: controle (`,`, `;`, `\+`) × aninhamento de fatos; rodar `proposicoes_compostas.pl` (`?- demo.`) — seção 1.1b
+- [ ] Proposições compostas: controle (`,`, `;`, `\+`, `->`) × aninhamento de fatos — seção 1.1b
 - [ ] Termos primitivos (proposição, V, F) × axiomas (terceiro excluído × não-contradição) + regressão infinita
 - [ ] Fato × regra × cláusula; aridade; contar regras
 - [ ] Mundo fechado (o não declarado é falso)
