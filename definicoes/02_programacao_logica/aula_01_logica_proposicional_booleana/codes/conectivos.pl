@@ -8,3 +8,5 @@ or(true, false).
 or(false, true).
 
 not(false).
+
+teste(True, true).
