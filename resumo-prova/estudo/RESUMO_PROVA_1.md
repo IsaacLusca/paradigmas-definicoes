@@ -118,6 +118,7 @@ Consultas e resultados (entradas e saídas esperadas no listener):
 Mais casos dos **operadores de controle** (mesmo formato):
 
 ```prolog
+% apenas operadores nativos: não precisa carregar arquivo
 ?- true.                    % --- constantes de controle ---
 true.
 ?- false.
@@ -395,6 +396,7 @@ unb2(X) :- darcy(X).
 ### 3.3. Exemplos resolvidos (Q8 — Prova 1: quantas consultas retornam falso?)
 
 ```prolog
+% nativos: não precisa carregar arquivo (f/1, f/2 abaixo são só termos; o asserta cria o fato)
 ?- 2 + 2 = 4.                     % FALSE — = não avalia: 2+2 é um termo, ≠ 4
 ?- X = Y.                         % true  — duas variáveis sempre unificam
 ?- f(_) = f(x, x).                % FALSE — aridades diferentes (f/1 vs f/2)
@@ -463,12 +465,14 @@ cor(azul).
 ```
 
 ```prolog
+% assumindo cor/1 carregado: salve os fatos acima em cor.pl e rode ?- consult('cor.pl').
 ?- cor(X).        % call → exit X=vermelho ; redo → exit X=azul ; redo → fail (cláusulas acabaram)
 ```
 
 Consulta composta — **a falha da direita dispara o `redo` da esquerda sozinha**:
 
 ```prolog
+% mesmo cor/1 acima (salve em cor.pl e ?- consult('cor.pl').)
 ?- cor(X), X = azul.
    call cor(X)  → exit X = vermelho
    call X=azul  → fail             (vermelho ≠ azul)
@@ -747,6 +751,7 @@ Traço de `?- f(10, 4, X).` → chama `g(4, 10, X)`:
 ### 6.3. Estruturas de dados
 
 ```prolog
+% arquivo do professor: consult('definicoes/02_programacao_logica/aula_05_recursao/codes/car.pl').
 car(honda, red, 4).          % estrutura ≡ fato na sintaxe
 car(honda, color(red), doors(4)).   % aninhada — NÃO unifica com a de cima
 ?- car(X, red, _).           % ordem dos argumentos importa
