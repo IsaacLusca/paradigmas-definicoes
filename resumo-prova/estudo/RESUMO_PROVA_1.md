@@ -584,6 +584,11 @@ $2 + 3 = 5$ → **A** (`Y = 5`).
 > Consequência prática: `a ; b , c` = `a ; (b , c)` (o `,` liga mais forte que `;`) — por isso os
 > parênteses em `(false ; true), true` são **obrigatórios**.
 
+> **Analogia fácil:** é a mesma ideia de "multiplicação antes da soma". `?- X is 2 + 3 * 4.` →
+> `X = 14`; `?- X is (2 + 3) * 4.` → `X = 20`. Em Prolog, `,` (1000) liga mais forte que `;`
+> (1100), como o `*` antes do `+`. Diferenças: a precedência é **configurável** (`:- op`) e
+> existe **associatividade** (`2^3^2` = `2^(3^2)`; `10-2-3` = `(10-2)-3`; `a = b = c` = erro).
+
 > **`:-` (1200) tem dois papéis:** **regra** (`cabeça :- corpo`, **xfx** — ler "cabeça SE corpo";
 > o corpo **implica** a cabeça: `corpo → cabeça`) e **diretiva** (`:- Objetivo.`, **fx** — roda ao
 > carregar o arquivo, ex.: `:- op(...)`, `:- dynamic p/1`, `:- use_module(...)`). E `?-` (fx, 1200)
