@@ -47,6 +47,30 @@
 (Q1 Schönfinkel/Z, Q2 redução SKSabc, Q3 definição de combinador, Q13 redução-β com dígitos).
 As questões de λ puro (Q4, Q5, Q12) e Haskell (Q6–Q11, Q14–Q16) **não** entram.
 
+### 0.1. O que mais cai — confirmado nas **provas reais** (fonte confiável)
+
+> Referência: as duas provas **aplicadas** (`prova_1/4BAE41` e `prova_2/704C60`). Os
+> **simulados** foram feitos com IA: servem para treinar, mas **não** são a referência.
+
+| Tema | Prova real | Questão |
+|---|---|---|
+| Conectivo pelo símbolo (bicondicional = **↔**) | 4BAE41 | Q1 |
+| Predicado ↔ conectivo em **mundo fechado** (`op(true,true)` → conjunção) | 4BAE41 | Q2 |
+| **Nº de linhas da tabela-verdade** de proposição composta ($2^n$) | 4BAE41 | Q11 |
+| Aritmética/precedência (`X is 2 + 1*3` → 5) | 4BAE41 | Q3 |
+| `:- op` (precedência, associatividade, posição) | 4BAE41 | Q4 |
+| Porta **`redo`** ao digitar `;` | 4BAE41 | Q5 |
+| **Aridade** (`alfa(a,1,True)` → `alfa/3`) | 4BAE41 | Q6 |
+| Traço de recursão (Collatz: `f(10,4,X)` → `X=4`) | 4BAE41 | Q7 |
+| Contagem de consultas **falsas** na unificação | 4BAE41 | Q8 |
+| `\=` (não unifica) | 4BAE41 | Q9 |
+| Recursão em lista (`p([2,3,5],X)` → `X=1`) | 4BAE41 | Q10 |
+| **Contagem de regras** | 4BAE41 | Q12 |
+| Schönfinkel: **Z = composição** | 704C60 | Q1 |
+| Redução `SKSabc = abc` | 704C60 | Q2 |
+| **Definição de combinador**: $\mathrm{FV}(M)=\emptyset$ | 704C60 | Q3 |
+| Redução-β com dígitos (`...307` → **370**) | 704C60 | Q13 |
+
 ---
 
 ## 1. Lógica Proposicional Booleana
@@ -69,6 +93,66 @@ As questões de λ puro (Q4, Q5, Q12) e Haskell (Q6–Q11, Q14–Q16) **não** e
 | Disjunção exclusiva (XOR) | $a \veebar b$ · $a \oplus b$ · `a xor b` | $a$ ou $b$, **mas não ambos** | verdadeiro **só** se os valores forem **diferentes** |
 
 **Pegadinha da prova (Q1):** "qual conectivo representa a bicondicional?" → **↔** (alternativa E).
+
+### 1.1b. Proposições compostas — o que mais cai (base: Prova 1 real 4BAE41)
+
+| Item | Como apareceu na prova real |
+|---|---|
+| **Nº de linhas da tabela-verdade** de uma composta | Q11: $(p \lor (q \land p)) \land (\sim p \lor (p \land q))$ → só $p,q$ → $2^2 = \mathbf{004}$ |
+| **Identificar o conectivo** pelo símbolo | Q1: bicondicional = **↔** |
+| **Predicado ↔ conectivo** em mundo fechado | Q2: `op(true, true).` (único fato) → **conjunção** |
+| **Predicado não é função** (controle × aninhamento) | `and(or(true,false),true)` → `false`; `(false ; true), true` → `true` |
+
+Consultas e resultados (arquivo executável: `definicoes/02_programacao_logica/aula_01_logica_proposicional_booleana/codes/proposicoes_compostas.pl` — rode `?- demo.` para as tabelas completas):
+
+| Consulta | Resultado |
+|---|---|
+| `?- true, true.` | `true` |
+| `?- true, false.` | `false` |
+| `?- false ; true.` | `true` |
+| `?- false ; false.` | `false` |
+| `?- \+ true.` | `false` |
+| `?- ((false ; true), true).` | `true` |
+| `?- and(or(true, false), true).` | `false` |
+
+Mais casos — transcrição `?- sessao.` (foco nos **operadores de controle**):
+
+```prolog
+?- true.                    % --- constantes de controle ---
+true.
+?- false.
+false.
+?- fail.
+false.
+
+?- true, true.              % --- conjuncao  ,  (a e b) ---
+true.
+?- true, false.
+false.
+?- false ; true.            % --- disjuncao  ;  (a ou b) ---
+true.
+?- false ; false.
+false.
+?- \+ true.                 % --- negacao  \+  (nao a) ---
+false.
+?- \+ (true, false).
+true.
+?- true -> true.            % --- condicional  ->  (se a entao b) ---
+true.
+?- true -> false.
+false.
+?- false -> true.
+false.
+?- (true -> false ; true).  % o '->' COMITA: nao cai no 'else'
+false.
+?- (false ; true), true.    % --- precedencia ---
+true.
+?- \+ true ; false.
+false.                      % = (\+ true) ; false
+```
+
+> Os **simulados** (feitos com IA) também cobram XOR/NAND/NOR e regras "falso/verdadeiro apenas
+> quando...", mas **isso não apareceu na Prova 1 real (4BAE41)** — priorize os 4 itens acima.
 
 ### 1.2. Tabela-verdade e número de linhas
 
@@ -221,6 +305,8 @@ unb2(X) :- darcy(X).
   por unificação. `and(or(true,false),true)` dá `false` porque o termo composto
   `or(...)` **não casa** com nenhum fato (não há "avaliação aninhada" como em Python).
   E `True` (maiúscula) é **variável livre** → busca infinita, não o valor verdadeiro.
+  *(Para as tabelas de consulta→resultado dos conectivos de controle, veja a seção 1.1b e o
+  arquivo `codes/proposicoes_compostas.pl`.)*
 
 ### 2.3b. Quantificadores: o que a consulta significa
 
@@ -435,6 +521,10 @@ If -> Then ; Else
 - Se `If` é verdadeiro → `Then`; senão → `Else`. O `->/2` é **extra-lógico**.
 - **Atenção ao `;` do `->`**: `(A -> B ; C)` é o if-then-else; sem parênteses pode interagir com
   outras disjunções.
+- **Pegadinha do commit:** `(true -> false ; true)` → **false**! O `->` **comita**: se a
+  **condição** sucede e o *then* falha, o **else não roda** (o else só roda quando a **condição**
+  falha). Leia como $(C \land T) \lor (\neg C \land E)$ — e **não** como $(C \to T) \lor E$.
+  O commit também **poda alternativas da condição**: `member(X,[1,2,3]) -> ...` só usa `X=1`.
 - **Padrão "tabela-verdade" da aula** (enumera combinações e imprime cada resultado;
   `bool/1` gera `true/false`, `call(Op,X,Y)` chama o conectivo, `fail` força o próximo):
   ```prolog
@@ -484,6 +574,22 @@ $2 + 3 = 5$ → **A** (`Y = 5`).
 
 > Consequência prática: `a ; b , c` = `a ; (b , c)` (o `,` liga mais forte que `;`) — por isso os
 > parênteses em `(false ; true), true` são **obrigatórios**.
+
+> **`:-` (1200) tem dois papéis:** **regra** (`cabeça :- corpo`, **xfx** — ler "cabeça SE corpo";
+> o corpo **implica** a cabeça: `corpo → cabeça`) e **diretiva** (`:- Objetivo.`, **fx** — roda ao
+> carregar o arquivo, ex.: `:- op(...)`, `:- dynamic p/1`, `:- use_module(...)`). E `?-` (fx, 1200)
+> é a **consulta** do listener. Demo: `codes/precedencia_conectivos.pl` (`?- demo.`, seção 6).
+
+> **Notação de tipo (`f`, `x`, `y`)** — é padrão do Prolog. `f` = posição do **operador**
+> (`a Op b` → `xfy`); **`x`** = lado com precedência **estritamente menor** (não aceita o mesmo
+> operador → lado "travado"); **`y`** = lado com precedência **≤** (aceita o mesmo operador →
+> encadeia). Daí:
+> - `xfx` = **não associa** (`=` 700 → `a = b = c` = **erro de sintaxe**; use `(a=b), (b=c)`);
+> - `xfy` = associa **à direita** (`,` `;` `->` `:-` `^` → `2^3^2` = `2^(3^2)` = **512**);
+> - `yfx` = associa **à esquerda** (`+` `-` `*` `/` → `10-2-3` = `(10-2)-3` = **5**);
+> - `fy`/`fx` = **prefixo** (`\+`; `:-` diretiva); `yf`/`xf` = pós-fixo (raro).
+>
+> Demo com árvores canônicas: `codes/tipos_operadores.pl` (`?- demo.`) — seção 5.1 da aula 01.
 
 ### 5.2. Declarar operadores (Q4!)
 
@@ -751,6 +857,17 @@ sobe: `X is 0 + (3-2) = 1` → **A** (`X = 1`).
 ---
 
 ## 8. Combinadores e Base SK (conteúdo da antiga Prova 2 que cai agora)
+
+**O que mais cai (confirmado na Prova 2 real — 704C60):**
+
+| Questão | Item | Resposta |
+|---|---|---|
+| Q1 | Schönfinkel: a letra **Z** = função de **composição** | **D** |
+| Q2 | Redução de `SKSabc` (`Sfgx = fx(gx)`, `Kxy = x`) | **abc** (E) |
+| Q3 | Definição de **combinador** (termo fechado) | $\mathrm{FV}(M)=\emptyset$ (D) |
+| Q13 | Redução-β de `S((S(K((S(KS))K)))S)(KK)307` | dígitos **370** |
+
+> Os itens de Combinadores vêm da Prova 2 (704C60) — são **questões reais**, não simulados.
 
 ### 8.1. O artigo e os cinco combinadores
 
@@ -1061,6 +1178,7 @@ q(0).                 % fato  → cláusula 4
 
 - [ ] Tabela dos conectivos (símbolos e definição de cada um)
 - [ ] Nº de linhas da tabela-verdade = $2^n$ (só variáveis **distintas** contam)
+- [ ] Proposições compostas: controle (`,`, `;`, `\+`) × aninhamento de fatos; rodar `proposicoes_compostas.pl` (`?- demo.`) — seção 1.1b
 - [ ] Termos primitivos (proposição, V, F) × axiomas (terceiro excluído × não-contradição) + regressão infinita
 - [ ] Fato × regra × cláusula; aridade; contar regras
 - [ ] Mundo fechado (o não declarado é falso)
