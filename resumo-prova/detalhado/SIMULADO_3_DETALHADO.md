@@ -75,6 +75,16 @@ Se fosse associativo à esquerda daria $(2^3)^2 = 64$ (alternativa B — a armad
 (2) acc([H|T], A, X) :- NewA is A + H, acc(T, NewA, X).
 ```
 
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `acc([], Acc, Acc)` | (2) `acc([H\|T], A, X)` |
+|---|---|---|
+| `acc([1,2,3,4], 0, X)` | `[] = [1,2,3,4]` ✗ | `H = 1`, `T = [2,3,4]`, `A = 0` ✓ (usa esta) |
+| `acc([2,3,4], 1, X)` | ✗ | `H = 2`, `T = [3,4]`, `A = 1` ✓ |
+| `acc([3,4], 3, X)` | ✗ | ✓ |
+| `acc([4], 6, X)` | ✗ | `H = 4`, `T = []`, `A = 6` ✓ |
+| `acc([], 10, X)` | `[] = []` **✓ → BASE** (`Acc = 10` → `X = 10`) | (nem tenta) |
+
 **Passo 1 — chamada `acc([1,2,3,4], 0, X)`**
 
 - Cláusula (1): `acc([], Acc, Acc)` casa? 1º argumento `[]` com `[1,2,3,4]` → **não** (a lista não
@@ -119,12 +129,12 @@ carregou o total de passo em passo). É por isso que esse padrão **não cresce 
 
 ### Q8 — Quantas retornam **verdadeiro**? → **C (2)**
 
-```prolog
-?- [H|T] = [1,2,3], H = 1.        → true   (H=1, T=[2,3])
-?- X = f(Y), Y = 2, X = f(2).     → true   (Y=2; X=f(2); casa consigo mesmo)
-?- [A, B | C] = [1], A = 1.       → false  ([A,B|C] exige ≥ 2 elementos; a lista tem 1)
-?- X \= X.                        → false  (X unifica com X — sempre)
-```
+| Consulta | Substituindo e executando | Resultado |
+|---|---|---|
+| `?- [H\|T] = [1,2,3], H = 1.` | unifica: `H = 1`, `T = [2,3]`; depois `H = 1` confirma | **true** |
+| `?- X = f(Y), Y = 2, X = f(2).` | `Y = 2`; `X = f(2)`; depois unifica `X` com `f(2)` (mesmo termo) | **true** |
+| `?- [A, B \| C] = [1], A = 1.` | a máscara `[A,B\|C]` exige **≥ 2 elementos**; `[1]` tem 1 → não unifica | false |
+| `?- X \= X.` | `X` unifica com ele mesmo → `\=` (não unifica) é falso | false |
 
 **2 verdadeiras.**
 
@@ -152,6 +162,15 @@ As outras terminam: `SKK` = $I$; `KS(SII(SII))` = $S$ (o $K$ **descarta** o 2º 
 (1) maior([X], X).
 (2) maior([H|T], X) :- maior(T, Y), (H > Y -> X = H ; X = Y).
 ```
+
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `maior([X], X)` | (2) `maior([H\|T], X)` |
+|---|---|---|
+| `maior([4,9,2,9], X)` | lista tem 4 elementos ≠ 1 ✗ | `H = 4`, `T = [9,2,9]` ✓ (usa esta) |
+| `maior([9,2,9], Y)` | 3 elementos ≠ 1 ✗ | `H = 9`, `T = [2,9]` ✓ |
+| `maior([2,9], Y1)` | 2 elementos ≠ 1 ✗ | `H = 2`, `T = [9]` ✓ |
+| `maior([9], Y2)` | `[9] = [X]` **✓ → BASE** (`Y2 = 9`) | (nem tenta) |
 
 **Passo 1 — chamada `maior([4,9,2,9], X)`**
 
@@ -204,6 +223,13 @@ níveis — cada um só troca se o seu H for estritamente maior.
 ```
 
 **Passo 0 — `nd(12, X)`** → cláusula (0): **N = 12** → chama `nd_(12, 1, 0, X)`.
+
+**Casamento das cláusulas:**
+
+| Chamada | (1) `nd_(N, D, A, X)` (recursiva) | (2) `nd_(N, D, A, A)` (base) |
+|---|---|---|
+| `nd_(12, 1, 0, X)` | `1 =< 12` ✓ → usa esta | `1 > 12` ✗ |
+| `nd_(12, 13, 6, X)` | `13 =< 12` ✗ | `13 > 12` ✓ → **BASE** (`X = 6`) |
 
 **Passo 1 — `nd_(12, 1, 0, X)`**
 

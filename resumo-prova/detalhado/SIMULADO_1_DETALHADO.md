@@ -24,20 +24,20 @@ A **disjunção** é a única que "morre" com tudo falso. Cada conectivo tem seu
 ### Q2 — `xor/2` na base fechada → **D (disjunção exclusiva)**
 
 ```prolog
-xor(true, false).
-xor(false, true).
+(1) xor(true, false).
+(2) xor(false, true).
 ```
 
-Debug da base (o que **está** e o que **não está**):
+**Teste de cada consulta (substituindo e verificando a unificação):**
 
-| Consulta | Resultado | Por quê |
+| Consulta | Substituindo | Resultado |
 |---|---|---|
-| `xor(true, false)` | true | fato declarado |
-| `xor(false, true)` | true | fato declarado |
-| `xor(true, true)` | **false** | não está na base (mundo fechado) |
-| `xor(false, false)` | **false** | não está na base |
+| `?- xor(true, false).` | casa com o fato (1): `true=true`, `false=false` | **true** |
+| `?- xor(false, true).` | casa com o fato (2) | **true** |
+| `?- xor(true, true).` | (1): 2º arg `false` com `true` → não; (2): 1º arg `false` com `true` → não | **false** (não há fato) |
+| `?- xor(false, false).` | nenhum fato casa | **false** |
 
-A tabela que sobra é exatamente a do **XOR**: verdadeiro quando os valores **diferem**. Pegadinha: sem mundo fechado, alguém "completaria" a tabela e erraria.
+A tabela que sobra é exatamente a do **XOR**: verdadeiro quando os valores **diferem**. Pegadinha: sem pensar em mundo fechado, alguém "completaria" a tabela e erraria.
 
 ### Q3 — `X is (2 + 3) * 2 - 1` → **A (Y = 9)**
 
@@ -93,6 +93,16 @@ Regras = cláusulas com `:-` → só 1 (`t/1`). **Pegadinha:** `s` tem 1 fato e 
 (1) h(0, 0).
 (2) h(N, X) :- N > 0, M is N - 1, h(M, Y), X is Y + N.
 ```
+
+**Casamento das cláusulas, chamada por chamada** (o Prolog testa na ordem e para na primeira que casa):
+
+| Chamada | (1) `h(0, 0)` | (2) `h(N, X)` |
+|---|---|---|
+| `h(4, X)` | `0 = 4` ✗ | `N = 4` ✓ (usa esta) |
+| `h(3, Y)` | `0 = 3` ✗ | `N = 3` ✓ |
+| `h(2, Y1)` | `0 = 2` ✗ | `N = 2` ✓ |
+| `h(1, Y2)` | `0 = 1` ✗ | `N = 1` ✓ |
+| `h(0, Y3)` | `0 = 0` **✓ → BASE** | (nem tenta) |
 
 > **Método de debug por substituição** (vamos usar este formato daqui em diante): para cada
 > chamada, monte uma **ficha**: (1) a cláusula que casou; (2) as variáveis da cabeça substituídas
@@ -163,14 +173,14 @@ Verificado no SWI: `?- h(4, X).` → `X = 10`.
 
 ### Q8 — Quantas consultas **retornam verdadeiro**? → **C (2)**
 
-```prolog
-?- 1 + 1 =:= 2.        → true    (compara VALORES: 2 = 2)
-?- 3 =:= 4.            → false   (3 ≠ 4)
-?- f(a) = f(b).        → false   (átomos diferentes; = unifica, não calcula)
-?- X = 1, Y = 2, X \= Y. → true  (1 ≠ 2: não unificam)
-```
+| Consulta | Substituindo e executando | Resultado |
+|---|---|---|
+| `?- 1 + 1 =:= 2.` | `=:=` calcula: `1+1` → `2`; `2 =:= 2` | **true** |
+| `?- 3 =:= 4.` | `3 =:= 4` | false |
+| `?- f(a) = f(b).` | `=` unifica: 2º arg `a` com `b` → não | false |
+| `?- X = 1, Y = 2, X \= Y.` | `X = 1`; `Y = 2`; `1 \= 2` (não unificam) | **true** |
 
-São **2 verdadeiras**. Cuidado com o comando: `=:=` calcula; `=` só unifica.
+São **2 verdadeiras**. Cuidado com o comando: `=:=` calcula; `=` só unifica (por isso `f(a) = f(b)` é false, mas `1+1 =:= 2` é true).
 
 ### Q9 — Letra **Z** de Schönfinkel → **D (composição)**
 
@@ -196,6 +206,16 @@ Para conferir sem decorar: $S(KS)Kabc = (KSa)(Ka)bc = (Sa)(Ka)bc$... mais simple
 ```
 
 O predicado **conta quantas divisões por 3** cabem até N chegar a 1 (o `+1` acontece na volta).
+
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `p(1, 0)` | (2) `p(N, K)` |
+|---|---|---|
+| `p(81, K)` | `1 = 81` ✗ | `N = 81` ✓ (usa esta) |
+| `p(27, K1)` | `1 = 27` ✗ | `N = 27` ✓ |
+| `p(9, K1')` | `1 = 9` ✗ | `N = 9` ✓ |
+| `p(3, K1'')` | `1 = 3` ✗ | `N = 3` ✓ |
+| `p(1, K1''')` | `1 = 1` **✓ → BASE** (`K1''' = 0`) | (nem tenta) |
 
 **Passo 1 — chamada `p(81, K)`**
 

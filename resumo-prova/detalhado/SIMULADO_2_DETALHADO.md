@@ -16,19 +16,19 @@ A **disjunção exclusiva** é verdadeira apenas quando os valores **diferem**; 
 ### Q2 — `ou/2` na base fechada → **B (disjunção)**
 
 ```prolog
-ou(true, true).
-ou(true, false).
-ou(false, true).
+(1) ou(true, true).
+(2) ou(true, false).
+(3) ou(false, true).
 ```
 
-Monte a tabela **da base** (só o que está declarado é true):
+**Teste de cada consulta (unificação com os fatos):**
 
-| Consulta | Resultado |
-|---|---|
-| `ou(true, true)` | true |
-| `ou(true, false)` | true |
-| `ou(false, true)` | true |
-| `ou(false, false)` | **false** (não declarado) |
+| Consulta | Substituindo | Resultado |
+|---|---|---|
+| `?- ou(true, true).` | casa com (1) | **true** |
+| `?- ou(true, false).` | casa com (2) | **true** |
+| `?- ou(false, true).` | casa com (3) | **true** |
+| `?- ou(false, false).` | (1) exige 1º `true`; (2) exige 1º `true`; (3) exige 2º `true` → nenhum fato casa | **false** |
 
 A única linha falsa é F,F → tabela da **disjunção**. (Se o único fato fosse `ou(true,true)`, seria conjunção — é a pegadinha do Sim1.)
 
@@ -61,14 +61,14 @@ meu_pred(X, Res) :- Res is X * 2.      % último argumento é o "retorno"
 
 ### Q6 — Base com único fato `cidade(df).` → **C (2 verdadeiras)**
 
-```prolog
-?- cidade(df).                     → true    (fato declarado)
-?- cidade(sp).                     → false   (mundo fechado)
-?- cidade(X).                      → true    (X = df)
-?- cidade(X), cidade(Y), X \= Y.   → false   (X = Y = df; df \= df falha)
-```
+| Consulta | Substituindo e executando | Resultado |
+|---|---|---|
+| `?- cidade(df).` | casa com o fato | **true** |
+| `?- cidade(sp).` | `sp` ≠ `df` → nenhum fato | false |
+| `?- cidade(X).` | unifica com o fato: **X = df** | **true** |
+| `?- cidade(X), cidade(Y), X \= Y.` | `X = df`; `Y = df`; testa `df \= df` → falha (mesmo termo) | false |
 
-Debug da 4ª: `cidade(X)` ata `X = df`; `cidade(Y)` ata `Y = df`; `df \= df` **falha** (é o mesmo termo). Total: **2**.
+Total: **2**. Detalhe da 4ª: como só há uma cidade, qualquer par de respostas é o mesmo termo — o `\=` nunca deixa passar.
 
 ### Q7 — Traço de `mdc(48, 18, X)` → **C (X = 6)**
 
@@ -78,6 +78,15 @@ Debug da 4ª: `cidade(X)` ata `X = df`; `cidade(Y)` ata `Y = df`; `df \= df` **f
 (1) mdc(A, 0, A).
 (2) mdc(A, B, X) :- B > 0, R is A mod B, mdc(B, R, X).
 ```
+
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `mdc(A, 0, A)` | (2) `mdc(A, B, X)` |
+|---|---|---|
+| `mdc(48, 18, X)` | 2º arg: `0 = 18` ✗ | `A = 48`, `B = 18` ✓ (usa esta) |
+| `mdc(18, 12, X)` | `0 = 12` ✗ | ✓ |
+| `mdc(12, 6, X)` | `0 = 6` ✗ | ✓ |
+| `mdc(6, 0, X)` | `0 = 0` **✓ → BASE** (`X = A = 6`) | (nem tenta) |
 
 **Passo 1 — chamada `mdc(48, 18, X)`**
 
@@ -121,12 +130,12 @@ Sim1, em que as contas só aconteciam na volta). Verificado no SWI: `?- mdc(48, 
 
 ### Q8 — Quantas retornam **verdadeiro**? → **C (2)**
 
-```prolog
-?- f(X, X) = f(a, b).          → false   (exigiria X = a E X = b ao mesmo tempo)
-?- 5 =:= 5.                    → true    (compara valores)
-?- g(a) = g(A), A \= b.        → true    (A = a, e a \= b)
-?- 2 + 3 = 5.                  → false   (= não avalia: +(2,3) ≠ 5)
-```
+| Consulta | Substituindo e executando | Resultado |
+|---|---|---|
+| `?- f(X, X) = f(a, b).` | 1º arg: `X = a`; 2º arg: o **mesmo X** teria de ser `b` → contradição | false |
+| `?- 5 =:= 5.` | `=:=` calcula os dois lados: `5 =:= 5` | **true** |
+| `?- g(a) = g(A), A \= b.` | `A = a`; depois `a \= b` (átomos diferentes) | **true** |
+| `?- 2 + 3 = 5.` | `=` não avalia: termo `+(2,3)` ≠ átomo `5` | false |
 
 **2 verdadeiras.** A 1ª é a pegadinha da “mesma variável” (§3.1): `f(X,X)` só casa com fatos de argumentos iguais.
 
@@ -152,6 +161,17 @@ Memorize o trio: $I = SKK$ · $B = S(KS)K$ · $M = SII$.
 (1) conta([], 0).
 (2) conta([H|T], X) :- conta(T, Y), (0 =:= H mod 2 -> X is Y+1 ; X = Y).
 ```
+
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `conta([], 0)` | (2) `conta([H\|T], X)` |
+|---|---|---|
+| `conta([2,3,4,5,6], X)` | `[] = [2,3,4,5,6]` ✗ | `H = 2`, `T = [3,4,5,6]` ✓ (usa esta) |
+| `conta([3,4,5,6], Y)` | ✗ | `H = 3`, `T = [4,5,6]` ✓ |
+| `conta([4,5,6], Y1)` | ✗ | ✓ |
+| `conta([5,6], Y2)` | ✗ | ✓ |
+| `conta([6], Y3)` | ✗ | `H = 6`, `T = []` ✓ |
+| `conta([], Y4)` | `[] = []` **✓ → BASE** (`Y4 = 0`) | (nem tenta) |
 
 **Passo 1 — chamada `conta([2,3,4,5,6], X)`**
 
@@ -218,6 +238,18 @@ Contou os pares **2, 4 e 6** → `X = 3` (verificado).
 (1) p(1, 0).
 (2) p(N, K) :- N > 1, 0 =:= N mod 2, M is N div 2, p(M, K1), K is K1 + 1.
 ```
+
+**Casamento das cláusulas, chamada por chamada:**
+
+| Chamada | (1) `p(1, 0)` | (2) `p(N, K)` |
+|---|---|---|
+| `p(64, K)` | `1 = 64` ✗ | `N = 64` ✓ (usa esta) |
+| `p(32, K1)` | ✗ | ✓ |
+| `p(16, K1')` | ✗ | ✓ |
+| `p(8, K1'')` | ✗ | ✓ |
+| `p(4, K1''')` | ✗ | ✓ |
+| `p(2, K1'''')` | ✗ | ✓ |
+| `p(1, K1''''')` | `1 = 1` **✓ → BASE** (`K1''''' = 0`) | (nem tenta) |
 
 **Passo 1 — chamada `p(64, K)`**
 

@@ -16,14 +16,18 @@ Bicondicional = "se, e somente se": verdadeira quando os valores são **iguais**
 
 ### Q2 — `op(true, true).` → **B (conjunção)**
 
-Base fechada com um único fato:
+```prolog
+(1) op(true, true).
+```
 
-| Consulta | Resultado |
-|---|---|
-| `op(true, true)` | true |
-| `op(true, false)` | false (não declarado) |
-| `op(false, true)` | false |
-| `op(false, false)` | false |
+**Teste de cada consulta (substituindo e verificando a unificação):**
+
+| Consulta | Substituindo | Resultado |
+|---|---|---|
+| `?- op(true, true).` | casa com (1) | **true** |
+| `?- op(true, false).` | (1) exige 2º `true`; `false` ≠ `true` | false |
+| `?- op(false, true).` | (1) exige 1º `true`; `false` ≠ `true` | false |
+| `?- op(false, false).` | nenhum argumento casa | false |
 
 Tabela = conjunção (só V com V e V). Sem pensar em mundo fechado, o candidato natural seria "disjunção" — pegadinha.
 
@@ -73,6 +77,19 @@ Aridade = **número de argumentos**: `alfa/3`. Note que `True` (maiúsculo) é v
                    succ(NewM, M), g(NewM, NewN, X).
 (3) g(0, X, X).
 ```
+
+**Casamento das cláusulas:**
+
+- `f(10, 4, X)` — existe só a cláusula (1) → `N = 10`, `M = 4`; o corpo chama `g(4, 10, X)`.
+- No `g`, a ordem é: **(2) recursiva primeiro**, depois **(3) base**.
+
+| Chamada | (2) `g(M, N, X)` | (3) `g(0, X, X)` |
+|---|---|---|
+| `g(4, 10, X)` | cabeça ✓ e `N > 0` ✓ → usa esta | (nem chega) |
+| `g(3, 5, X)` | ✓ | (nem chega) |
+| `g(2, 16, X)` | ✓ | (nem chega) |
+| `g(1, 8, X)` | ✓ | (nem chega) |
+| `g(0, 4, X)` | cabeça casa (`M = 0`), mas o corpo **falha** em `succ(NewM, 0)` — não existe natural cujo sucessor seja 0 ("succ" do SWI exige antecessor ≥ 0) | `0 = 0` **✓ → BASE** (`X = 4`) |
 
 **Passo 0 — chamada `f(10, 4, X)`**
 
@@ -131,6 +148,8 @@ Aridade = **número de argumentos**: `alfa/3`. Note que `True` (maiúsculo) é v
 
 **Passo 5 — chamada `g(0, 4, X)`**
 
+- Cláusula (2): a cabeça casa (`M = 0`, `N = 4`), mas o corpo **falha** em `succ(NewM, 0)` —
+  o `succ/2` do SWI exige antecessor **não-negativo** (não existe natural cujo sucessor seja 0).
 - Cláusula (3): `g(0, X, X)` casa → o 2º argumento (4) e o 3º são o **mesmo X** → **X = 4**.
   Termina aqui.
 
@@ -140,14 +159,14 @@ contador de segurança que **desce** até 0 (por isso o `succ(NewM, M)` "inverti
 
 ### Q8 — Quantas retornam **falso**? → **C (2)**
 
-```prolog
-?- 2 + 2 = 4.            → false   (= não avalia: +(2,2) ≠ 4)
-?- X = Y.                → true    (duas variáveis sempre unificam)
-?- f(_) = f(x, x).       → false   (aridades diferentes: f/1 vs f/2)
-?- f(_, g(B,c)) = f(A, g(b,C)), B \= C.  → true  (B=b, C=c; b \= c)
-```
+| Consulta | Substituindo e executando | Resultado |
+|---|---|---|
+| `?- 2 + 2 = 4.` | `=` não avalia: o termo `+(2,2)` ≠ o átomo `4` | **false** |
+| `?- X = Y.` | duas variáveis livres unificam sempre (ficam apelidadas) | true |
+| `?- f(_) = f(x, x).` | aridades diferentes: `f/1` vs `f/2` → nem compara os args | **false** |
+| `?- f(_, g(B,c)) = f(A, g(b,C)), B \= C.` | casa estrutura a estrutura: `B = b`, `C = c`; depois `b \= c` | true |
 
-**2 falsas** (a 1ª e a 3ª). A pegadinha é a 2ª (`X = Y` é true!) e a 4ª (unificação aninhada funciona).
+**2 falsas** (a 1ª e a 3ª). A pegadinha é a 2ª (`X = Y` é **true**!) e a 4ª (unificação aninhada funciona).
 
 ### Q9 — Predicado "não unifica" → **B (`\=`)**
 
@@ -166,6 +185,54 @@ Ex.: `a \= b` → true; `2 \= 2` → false; `2+2 \= 4` → **true** (não calcul
 (1) p([_|[]], X) :- p([], X).                     % lista de exatamente 1 elemento
 (2) p([], 0).                                     % base
 (3) p([A,B|C], X) :- p(C, NewX), X is NewX + (B - A).
+```
+
+**O que o código faz, em português:**
+
+1. **Lista vazia** (`[]`) → resposta **0**.
+2. **Lista de 1 elemento** (`[_|[]]`) → "repassa" para a lista vazia → **0** (o elemento sozinho
+   é ignorado).
+3. **Lista de 2 ou mais** (`[A,B|C]`) → pega **os dois primeiros** (A e B), calcula `B − A` e
+   soma com a resposta do **resto** (`C`).
+
+Resultado prático: **soma as diferenças de pares consecutivos** — (2º−1º) + (4º−3º) + (6º−5º)…
+Se a lista tiver tamanho **ímpar**, o último elemento é descartado (cai na regra 2).
+
+**Como ler `[A,B|C]` (e a questão da "aridade"):**
+
+- `[X|Y]` é só forma curta de `'.'(X, Y)` — o functor dos pares (cabeça, cauda), que tem
+  **aridade 2**. Mas isso é a anatomia interna da lista, **não** a aridade do predicado.
+- A **aridade do predicado** conta os argumentos: `p([2,3,5], X)` tem 2 argumentos → `p/2`; a
+  lista inteira conta como **1** argumento.
+- `[A,B|C]` = `'.'(A, '.'(B, C))` → "A = 1º, B = 2º, C = lista do resto". Exemplo:
+  `[2,3,5]` = `'.'(2, '.'(3, '.'(5, [])))`; casando com `[A,B|C]`: **A = 2**, **B = 3**,
+  **C = [5]**.
+
+**Verificações no SWI (para fixar a dinâmica):**
+
+| Consulta | Conta | Resultado |
+|---|---|---|
+| `p([], X)` | base | `0` |
+| `p([9], X)` | regra 2 → lista vazia | `0` |
+| `p([2,3,5], X)` | (3−2) | `1` |
+| `p([1,4,10,20], X)` | (4−1) + (20−10) | `13` |
+| `p([1,2,3,4,5,6], X)` | (2−1) + (4−3) + (6−5) | `3` |
+
+**Teste das cláusulas ("casou ou não", passo a passo):**
+
+```text
+p([2,3,5], X)
+  (1) [_|[]] = [2,3,5]    →  _ = 2 (✓) e [] = [3,5] (✗)   → não casa
+  (2) [] = [2,3,5]        →  ✗
+  (3) [A,B|C] = [2,3,5]   →  A = 2, B = 3, C = [5]        → casa ✓
+
+p([5], NewX)               ← o resto C é a LISTA [5]
+  (1) [_|[]] = [5]        →  _ = 5 (✓) e [] = [] (✓)      → casa ✓ (corpo: p([], NewX))
+      p([], NewX)
+        (1) [_|[]] = []   →  ✗
+        (2) p([], 0) = p([], NewX)  →  NewX = 0            → casa ✓
+
+voltando:  X is NewX + (B - A)  →  X is 0 + (3 - 2)  →  X = 1
 ```
 
 **Passo 1 — chamada `p([2, 3, 5], X)`**
@@ -203,8 +270,8 @@ Ex.: `a \= b` → true; `2 \= 2` → false; `2+2 \= 4` → **true** (não calcul
 | Passo 2 | — (delegação) | — | devolve `NewX = 0` |
 | Passo 1 | `X is NewX + (3-2)` | `X is 0 + 1` | **X = 1** ✓ |
 
-O predicado soma as **diferenças entre elementos consecutivos** (aqui: só 3−2). Verificado:
-`?- p([2, 3, 5], X).` → `X = 1`.
+No nosso exemplo só existe **um par**: `X = 0 + (3 − 2) = 1` ✓ (verificado no SWI, junto com os
+outros exemplos da tabela acima).
 
 ---
 
@@ -267,13 +334,13 @@ is_sum_of_5(N) :-
     N =:= A + B + C + D + E.
 ```
 
-Análise das três consultas:
+Análise das três consultas (substituindo os valores e seguindo os objetivos):
 
-| Consulta | Resultado | Por quê |
+| Consulta | Substituindo e executando | Resultado |
 |---|---|---|
-| `is_sum_of_5(5)` | **false** | falha já no guard `N >= 15` |
-| `is_sum_of_5(15)` | **true** | 1+2+3+4+5 = 15 |
-| `is_sum_of_5(30)` | **true** | por ex. 1+2+3+4+20 = 30 |
+| `?- is_sum_of_5(5).` | 1º objetivo: `5 >= 15` → **falha** (nem tenta os `between`) | **false** |
+| `?- is_sum_of_5(15).` | `15 >= 15` ✓; a busca acha `A,B,C,D,E = 1,2,3,4,5`; `15 =:= 1+2+3+4+5` ✓ | **true** |
+| `?- is_sum_of_5(30).` | `30 >= 15` ✓; acha, por exemplo, `1,2,3,4,20`; `30 =:= 30` ✓ | **true** |
 
 São **2 true** ✓ (verificado). O `A < B < C < D < E` garante distintos **sem repetir permutações** — se não houvesse a ordem, a busca geraria a mesma soma várias vezes.
 
@@ -283,6 +350,18 @@ São **2 true** ✓ (verificado). O `A < B < C < D < E` garante distintos **sem 
 (1) power_of_5(1).                                    % base: 5^0
 (2) power_of_5(N) :- N > 1, N mod 5 =:= 0, M is N div 5, power_of_5(M).
 ```
+
+**Casamento das cláusulas:**
+
+| Chamada | (1) `power_of_5(1)` | (2) `power_of_5(N)` |
+|---|---|---|
+| `power_of_5(1)` | `1 = 1` **✓ → true** | (nem tenta) |
+| `power_of_5(25)` | `1 = 25` ✗ | `N = 25` ✓ (corpo: `25 mod 5 =:= 0` ✓ …) |
+| `power_of_5(5)` | ✗ | ✓ |
+| `power_of_5(1)` | `1 = 1` ✓ → true | |
+| `power_of_5(100)` | ✗ | `N = 100` ✓ |
+| `power_of_5(20)` | ✗ | ✓ |
+| `power_of_5(4)` | `1 = 4` ✗ | `N = 4` ✓ mas o **corpo falha**: `4 mod 5 =:= 0` ✗ → sem mais cláusulas → **false** |
 
 **Consulta `power_of_5(1)`**
 

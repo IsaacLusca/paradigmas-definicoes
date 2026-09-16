@@ -233,6 +233,13 @@ divisores_(N, D, Acc, X) :-
 divisores_(N, D, Acc, Acc) :- D > N.
 ```
 
+**Casamento das cláusulas (chamada por chamada):**
+
+| Chamada | (1) `divisores_(N, D, Acc, X)` (`D =< N`) | (2) `divisores_(N, D, Acc, Acc)` (`D > N`) |
+|---|---|---|
+| `divisores_(12, 1, 0, X)` | `1 =< 12` ✓ → usa esta | `1 > 12` ✗ |
+| `divisores_(12, 13, 6, X)` | `13 =< 12` ✗ | `13 > 12` ✓ → **BASE** (`X = 6`) |
+
 Debug passo a passo de `?- divisores(12, X).` (troque 12 por 60 ou 20 para os outros exemplos):
 
 **Passo 0** — `divisores(12, X)` → cláusula wrapper: `divisores_(12, 1, 0, X)`.
