@@ -10,7 +10,7 @@
 >
 > **Como usar:** leia as seções 1–8 em ordem (cada uma explica a base do zero);
 > depois treine a seção 9 (padrões de código) e confira a 11 (erros clássicos);
-> feche com os 3 simulados (`simulador.html`) e o checklist da seção 12.
+> feche com os 4 simulados (`simulador.html`) e o checklist da seção 12.
 
 ---
 
@@ -1219,15 +1219,17 @@ q(0).                 % fato  → cláusula 4
 - [ ] Pássaros: tabela completa ($B_1=BBB$, $D=BB$, $G=BBC$, $O=SI$) + $J$ ($JJ=S$...) + Q6 egocêntrico
 - [ ] NAND/NOR gerando tudo (fórmulas); conectivo fundamental de Schönfinkel
 - [ ] Reconhecer no código os 4 padrões (seção 9): between+ordenado, divisão recursiva, acumulador, contagem com `mod`/condicional
-- [ ] Fazer os 3 simulados fechado (no `simulador.html`) e revisar cada erro
+- [ ] Fazer os 4 simulados fechado (no `simulador.html`) e revisar cada erro
+- [ ] Treinar as **listas do curso** no simulador (modo lista com resposta comentada)
 
 ---
 
 **Materiais de apoio (só se quiser aprofundar — o estudo fecha por este arquivo):**
 - `definicoes/02_programacao_logica/` — resumos detalhados das 6 aulas (com códigos)
 - `definicoes/03_combinadores/` — Introdução e Base SK
-- `resumo-prova/simulados/` — **3 simulados** no estilo da prova + gabaritos resolvidos
-- `resumo-prova/simulador.html` — **simulador interativo** (abra no navegador): corrige e mostra o gabarito na hora
+- `resumo-prova/simulados/` — **4 simulados** no estilo da prova + gabaritos resolvidos
+  (o **SIM4** reproduz a prova real 4BAE41 + combinadores da antiga Prova 2)
+- `resumo-prova/simulador.html` — **simulador interativo** (abra no navegador): corrige e mostra o gabarito na hora; inclui as **listas do curso** com resposta comentada
 - `resumo-prova/prova_1/` — prova e gabarito (4BAE41)
 - `resumo-prova/prova_2/` — prova e gabarito (704C60)
-- `resumo-prova/listas/` — listas de Programação Lógica e Combinadores
+- `resumo-prova/listas/` — listas de Programação Lógica e Combinadores (também no simulador, com respostas comentadas)
