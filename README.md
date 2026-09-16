@@ -20,6 +20,8 @@ Fonte: `documento-base/Paradigmas/` · **Formato dos resumos: [`definicoes/TEMPL
 
 **Extras:** exercícios em `documento-base/Paradigmas/Listas/` · guias de instalação em `documento-base/Paradigmas/IO/`.
 
+**Guia rápido de Prolog:** [`PROLOG_EXPLICADO.md`](PROLOG_EXPLICADO.md) — aritmética, recursão e backtracking explicados passo a passo, com exemplos testados no SWI.
+
 ## Progresso
 
 - [ ] 01 Fundamentos
