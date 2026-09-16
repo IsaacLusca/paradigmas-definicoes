@@ -233,3 +233,4 @@ eventuais parênteses.
 **Folha de respostas (modelo):** Q1–Q10 e Q13–Q17 (marque A–E) · Q11, Q12 e Q18 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_4_GABARITO.md`](SIMULADO_4_GABARITO.md).
+> **Debug linha a linha** em [`../detalhado/SIMULADO_4_DETALHADO.md`](../detalhado/SIMULADO_4_DETALHADO.md).

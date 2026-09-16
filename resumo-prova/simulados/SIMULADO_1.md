@@ -159,3 +159,4 @@ $$P : (p \land \lnot q) \lor (\lnot p \to (q \land r))$$
 **Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_1_GABARITO.md`](SIMULADO_1_GABARITO.md).
+> **Debug linha a linha** em [`../detalhado/SIMULADO_1_DETALHADO.md`](../detalhado/SIMULADO_1_DETALHADO.md).

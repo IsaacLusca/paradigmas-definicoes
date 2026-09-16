@@ -8,6 +8,9 @@ Material de estudo para as provas de Paradigmas de Programação.
 resumo-prova/
 ├── estudo/
 │   └── RESUMO_PROVA_1.md      ← RESUMO GERAL ÚNICO para a Prova 1 (comece por aqui)
+├── detalhado/                 ← explicação profunda (debug linha a linha + passo a passo)
+│   ├── SIMULADO_1_DETALHADO.md ... SIMULADO_4_DETALHADO.md
+│   └── LISTA_PL_DETALHADA.md / LISTA_COMBINADORES_DETALHADA.md
 ├── simulador.html             ← simulador dos 4 simulados + listas com resposta comentada (abra no navegador)
 ├── simulados/
 │   ├── SIMULADO_1.md          ← simulado no estilo da prova (12 MC + 2 abertas)

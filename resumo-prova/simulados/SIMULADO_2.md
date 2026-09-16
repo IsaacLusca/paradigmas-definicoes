@@ -154,3 +154,4 @@ $$P : \lnot(p \land q) \leftrightarrow (\lnot p \lor \lnot q)$$
 **Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_2_GABARITO.md`](SIMULADO_2_GABARITO.md).
+> **Debug linha a linha** em [`../detalhado/SIMULADO_2_DETALHADO.md`](../detalhado/SIMULADO_2_DETALHADO.md).
