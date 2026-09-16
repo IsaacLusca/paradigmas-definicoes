@@ -645,6 +645,12 @@ divisores(N, X) :- ...                     % último argumento = retorno
 ```
 Com isso: `?- 60 divisores X.` → `X = 12.` e `?- R is divisores(20).` → `R = 6.`
 
+> **Detalhe do SWI 10 (verificado):** a expansão da função aritmética acontece em **tempo de
+> compilação** — funciona em código de arquivo e no prompt do SWI. Se o objetivo for montado
+> **em runtime** (termo construído dinamicamente, ex. via `-g`/meta-chamada), não há expansão →
+> `type_error(evaluable, ...)`; nesse caso use `arithmetic_expression_value/2`
+> (`arithmetic_expression_value(divisores(20), V)` → `V = 6`).
+
 - **Uso aninhado dentro do `is/2`** (mesmo sem `op/3`):
   ```prolog
   :- arithmetic_function(number_of_lines/1).
@@ -1077,7 +1083,7 @@ divisores_(N, D, Acc, X) :-
     (0 =:= N mod D -> NewAcc is Acc + 1 ; NewAcc = Acc),
     NewD is D + 1,
     divisores_(N, NewD, NewAcc, X).
-divisores_(_, D, Acc, Acc) :- D > N.
+divisores_(N, D, Acc, Acc) :- D > N.
 ```
 
 **Contagem em lista — `count_odds/2`** (conta quantos ímpares há na lista):
@@ -1112,7 +1118,7 @@ num_divisors_(N, D, Acc, X) :-
     (0 =:= N mod D -> NewAcc is Acc + 1 ; NewAcc = Acc),
     NewD is D + 1,
     num_divisors_(N, NewD, NewAcc, X).
-num_divisors_(_, D, Acc, Acc) :- D > N.
+num_divisors_(N, D, Acc, Acc) :- D > N.
 ```
 - `num_divisors(6, X)` → 4 (1, 2, 3, 6) ✓ · `num_divisors(7, X)` → 2 (1, 7) ✓
 

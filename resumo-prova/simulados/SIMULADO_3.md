@@ -115,7 +115,7 @@ nd_(N, D, A, X) :-
     (0 =:= N mod D -> B is A + 1 ; B = A),
     D1 is D + 1,
     nd_(N, D1, B, X).
-nd_(_, D, A, A) :- D > N.
+nd_(N, D, A, A) :- D > N.
 ```
 Qual é o resultado da consulta `?- nd(12, X).`?
 (A) X = 4.
@@ -149,3 +149,4 @@ remanescentes, na ordem obtida.
 **Folha de respostas (modelo):** Q1–Q12 (marque A–E) · Q13 e Q14 em CDU (C, D, U).
 
 > Gabarito comentado em [`SIMULADO_3_GABARITO.md`](SIMULADO_3_GABARITO.md).
+> **Debug linha a linha** em [`../detalhado/SIMULADO_3_DETALHADO.md`](../detalhado/SIMULADO_3_DETALHADO.md).
