@@ -116,6 +116,10 @@
   .resposta-linha b { color: var(--cinza); font-weight: 600; }
   .expl { font-size: .9rem; background: #fff; border: 1px dashed var(--borda); border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
   .rodape { margin-top: 28px; color: var(--cinza); font-size: .8rem; text-align: center; }
+  .secao-titulo { margin-top: 30px; }
+  .secao-sub { margin: -8px 0 14px; color: var(--cinza); font-size: .9rem; }
+  .btn.pequeno { padding: 7px 14px; font-size: .85rem; }
+  .gabarito { margin-top: 12px; }
   @media (max-width: 560px) { .placar { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -123,17 +127,20 @@
 <main class="wrap">
   <header class="topo">
     <h1>Simulador — Prova 1</h1>
-    <p class="sub">Paradigmas de Programação · Prolog + Combinadores · 12 múltipla escolha + 2 abertas · correção automática</p>
+    <p class="sub">Paradigmas de Programação · Prolog + Combinadores · simulados com correção automática + listas de exercícios com resposta comentada</p>
   </header>
 
   <section id="tela-inicio" class="card">
-    <h2>Escolha um simulado</h2>
+    <h2>Simulados</h2>
     <div id="lista-provas" class="grade"></div>
+    <h2 class="secao-titulo">Listas de exercícios</h2>
+    <p class="secao-sub">Questões originais das listas do curso, com resposta comentada (sem pontuação).</p>
+    <div id="lista-listas" class="grade"></div>
   </section>
 
   <section id="tela-prova" class="card" hidden>
     <div class="barra">
-      <span><b id="prova-nome"></b><br>14 questões · 30 pontos</span>
+      <span><b id="prova-nome"></b><br><span id="prova-info"></span></span>
       <span>Responda e clique em <b>Corrigir simulado</b> no final</span>
     </div>
     <div id="questoes"></div>
@@ -144,15 +151,26 @@
 
   <section id="tela-resultado" class="card" hidden>
     <div class="placar">
-      <div><strong id="pontos">—</strong><span>pontos (de 30)</span></div>
+      <div><strong id="pontos">—</strong><span>pontos (de <span id="total-pts">30</span>)</span></div>
       <div><strong id="nota">—</strong><span>nota (0–10)</span></div>
-      <div><strong id="acertos">—</strong><span>acertos (de 14)</span></div>
+      <div><strong id="acertos">—</strong><span>acertos (de <span id="total-qs">14</span>)</span></div>
     </div>
     <h2>Resultado e gabarito comentado</h2>
     <div id="revisao"></div>
     <div class="navegacao">
       <button id="btn-refazer" class="btn">Refazer este simulado</button>
       <button id="btn-inicio" class="btn secundario">Escolher outro</button>
+    </div>
+  </section>
+
+  <section id="tela-lista" class="card" hidden>
+    <div class="barra">
+      <span><b id="lista-nome"></b><br><span id="lista-info"></span></span>
+      <button id="btn-ver-todas" class="btn secundario">Ver todas as respostas</button>
+    </div>
+    <div id="lista-questoes"></div>
+    <div class="navegacao">
+      <button id="btn-lista-voltar" class="btn secundario">Voltar</button>
     </div>
   </section>
 
@@ -226,6 +244,71 @@ const PROVAS = [
       { q: "Quantas **cláusulas** existem no código Prolog abaixo? (Cláusulas = fatos + regras.)", code: "1  filme('Matrix', 1999).\n2  filme('Interestelar', 2014).\n3  filme('Duna', 2021).\n4  diretor('Matrix', 'Wachowski').\n5  diretor('Interestelar', 'Nolan').\n6  classico(X) :- filme(X, A), A < 2000.\n7  recente(X) :- filme(X, A), A >= 2020.\n8  indicado(X, Y) :- filme(X, _), diretor(X, Y).", answer: 8, expl: "5 fatos (linhas 1–5) + 3 regras (linhas 6–8) = 8 cláusulas (resumo §10)." },
       { q: "Aplique a redução-β em `SKS34` (Sfgx = fx(gx), Kxy = x; cada dígito é um termo independente). Digite os dígitos remanescentes na ordem obtida.", code: "S K S 3 4", answer: 34, expl: "SKS34 = ((SKS)3)4; SKS3 = (K3)(S3) = 3 (K devolve o 1º) → 3 4 → dígitos 3,4 → 34 (resumo §8.2)." }
     ]
+  },
+  {
+    id: 4,
+    titulo: "Simulado 4 — Prova 1 real (4BAE41) + Combinadores",
+    pontosPartes: { A: 2, B: 2, C: 1 },
+    parteA: [
+      { q: "Em relação à lógica proposicional booleana, qual conectivo representa a **bicondicional**?", certa: "↔", erradas: ["∧", "∨", "¬", "→"], expl: "A bicondicional (↔) é verdadeira quando os valores são iguais (resumo §1.1)." },
+      { q: "Considere o fato `op(true, true).` (único da base). O predicado `op/2` implementa qual conectivo?", certa: "conjunção", erradas: ["disjunção", "condicional", "bicondicional", "disjunção exclusiva"], expl: "Mundo fechado: só (V,V) é true; as demais combinações não estão declaradas → tabela da conjunção (resumo §2.2)." },
+      { q: "Considere o predicado abaixo. Qual é o resultado de `?- f(Y).`?", code: "f(X) :- X is 2 + 1*3.", certa: "Y = 5", erradas: ["Y = 7", "Y = 8", "Y = 9", "Y = 10"], expl: "* (400) liga antes de + (500): 1*3 = 3 → 2+3 = 5 (resumo §5.1)." },
+      { q: "Qual diretiva define, para um predicado, a precedência, a associatividade e a posição em relação aos argumentos?", certa: ":- op", erradas: [":- dynamic", ":- use_module", ":- meta_predicate", ":- arithmetic_function"], expl: ":- op define; current_op/3 só consulta (resumo §5.2)." },
+      { q: "Numa consulta composta Q1, Q2, Q3 que obteve sucesso, qual comando faz o fluxo entrar na consulta Q3 pela porta **redo**?", certa: ";", erradas: ["call", "exit", "fail", "redo"], expl: "O `;` força redo no último predicado (resumo §4.2)." },
+      { q: "Qual é a aridade do predicado `alfa` no código abaixo?", code: "alfa(a, 1, True).\nbeta(25).\ngama(banana, laranja).\ndelta(norte, 9.0, sul, 4.5).\nomega :- f(A, B, C), write(B), nl.", certa: "3", erradas: ["0", "1", "2", "4"], expl: "alfa(a, 1, True) tem 3 argumentos → alfa/3 (resumo §2.1)." },
+      { q: "Considere o predicado `f/3` abaixo. Qual é o resultado de `?- f(10, 4, X).`?", code: "f(N, M, X) :- g(M, N, X).\n\ng(M, N, X) :-\n    N > 0,\n    (N mod 2 =:= 0\n     -> NewN is N div 2\n     ; NewN is 3*N + 1),\n    succ(NewM, M),\n    g(NewM, NewN, X).\n\ng(0, X, X).", certa: "X = 4", erradas: ["X = 5", "X = 7", "X = 8", "X = 10"], expl: "g(4,10)→g(3,5)→g(2,16)→g(1,8)→g(0,4): na base, X = 4 (resumo §6.2)." },
+      { q: "Considere as quatro consultas abaixo. Quantas retornam **falso**?", code: "?- 2 + 2 = 4.\n?- X = Y.\n?- f(_) = f(x, x).\n?- f(_, g(B, c)) = f(A, g(b, C)), B \\= C.", certa: "2", erradas: ["0", "1", "3", "4"], expl: "Falsas: 2+2 = 4 (= não avalia) e f(_) = f(x,x) (aridades 1 vs 2). X = Y é true; a 4ª é true (b \\= c) → 2 falsas (resumo §3.2 e §3.3)." },
+      { q: "Qual predicado é verdadeiro apenas quando o argumento à esquerda **não unifica** com o da direita?", certa: "\\=", erradas: ["=", "\\+", "=:=", "=\\="], expl: "\\= = não unifica; \\+ nega um objetivo; =:= e =\\= comparam valores (resumo §3.2)." },
+      { q: "Considere o predicado `p/2` abaixo. Qual é o primeiro retorno de `?- p([2, 3, 5], X).`?", code: "p([_|[]], X) :- p([], X).\np([], 0).\n\np([A,B|C], X) :-\n    p(C, NewX),\n    X is NewX + (B - A).", certa: "X = 1", erradas: ["X = 2", "X = 3", "X = 4", "X = 5"], expl: "p([5])→p([])=0; na volta: X = 0 + (3-2) = 1 (resumo §7.3)." }
+    ],
+    parteB: [
+      { q: "Qual é o número de linhas da tabela-verdade da proposição composta abaixo?", code: "P : (p ∨ (q ∧ p)) ∧ (∼p ∨ (p ∧ q))", answer: 4, expl: "Só p e q são proposições simples distintas → 2² = 4 linhas (resumo §1.2)." },
+      { q: "Quantas são as **regras** definidas no código Prolog abaixo?", code: "1  f(1, 2).\n2  f(2, 2).\n3  f(3, 1).\n4\n5  g(1).\n6  g(2).\n7  g(3).\n8  h(10).\n9\n10 f(X, Y) :- g(X), h(Y).\n11 f(X, X) :- g(X) ; h(X).\n12 g(Z) :- f(1, Z).", answer: 3, expl: "Regras: linhas 10, 11 e 12 → 3. As outras 7 cláusulas são fatos (resumo §10)." }
+    ],
+    parteC: [
+      { q: "Schönfinkel usou a letra maiúscula **Z** para qual função particular?", certa: "Função de composição", erradas: ["Função de fusão", "Função identidade", "Função constância", "Função de intercâmbio"], expl: "Z (hoje B): Zφχx = φ(χx) (resumo §8.1)." },
+      { q: "Com `Sfgx = fx(gx)` e `Kxy = x`, a expressão `SKSabc` reduz para:", certa: "abc", erradas: ["b", "ac", "bc", "Sbc"], expl: "SKSabc = ((SKS)a)bc = (Ka(Sa))bc = abc (resumo §8.2)." },
+      { q: "Qual notação expressa o conceito de **combinador** (termo fechado, sem variáveis livres)?", certa: "FV(M) = ∅", erradas: ["MN", "λx.M", "M[x := N]", "∀x, Mx ≡ Nx"], expl: "Combinador = termo fechado: FV(M) = ∅ (resumo §8.1)." },
+      { q: "Considere `is_sum_of_5/1` abaixo. Quantas das consultas `?- is_sum_of_5(5).`, `?- is_sum_of_5(15).` e `?- is_sum_of_5(30).` retornam **true**?", code: "is_sum_of_5(N) :-\n    N >= 15,\n    between(1, N, A),\n    between(A, N, B), A < B,\n    between(B, N, C), B < C,\n    between(C, N, D), C < D,\n    between(D, N, E), D < E,\n    N =:= A + B + C + D + E.", certa: "2", erradas: ["0", "1", "3", "4"], expl: "5 → false (guard N>=15); 15 → true (1+2+3+4+5); 30 → true (ex.: 1+2+3+4+20) → 2 (resumo §9.2)." },
+      { q: "Considere `power_of_5/1` abaixo. Quais são os resultados de `?- power_of_5(1).`, `?- power_of_5(25).` e `?- power_of_5(100).`?", code: "power_of_5(1).\npower_of_5(N) :-\n    N > 1,\n    N mod 5 =:= 0,\n    M is N div 5,\n    power_of_5(M).", certa: "true · true · false", erradas: ["true · true · true", "false · true · false", "true · false · false", "true · false · true"], expl: "1 → true (5⁰); 25 → 25→5→1 true; 100 → 100→20→4 (4 mod 5 ≠ 0) false (resumo §9.3)." },
+      { q: "Determine a redução-β de `S((S(K((S(KS))K)))S)(KK)307` (cada dígito é um termo independente). Digite os dígitos remanescentes na ordem obtida.", answer: 370, expl: "S(US)(KK)3 = (US3)(KK3); US3 = B(S3); KK3 = K; B(S3)K0 = (S3)(K0); (S3)(K0)7 = (37)0 → dígitos 3,7,0 (resumo §8.5)." }
+    ]
+  }
+];
+
+const LISTAS = [
+  {
+    id: "pl",
+    titulo: "Lista — Programação Lógica",
+    descricao: "Partes A–D · 13 questões · respostas comentadas",
+    itens: [
+      { num: "1", ref: "§1.3", texto: "Julgue a afirmativa: “Afirmar que uma proposição p é, ao mesmo tempo, verdadeira e falsa, violaria o Princípio do Terceiro Excluído”.", resposta: "**Falsa.** “Ao mesmo tempo verdadeira e falsa” viola o Princípio da **não-contradição** (uma proposição **não pode** ser V **e** F). O terceiro excluído trata de outra coisa: excluir uma terceira possibilidade (“nem V nem F”)." },
+      { num: "2", ref: "§1.4", texto: "Na canção Maricotinha, Dorival Caymmi afirma: “Se fizer bom tempo amanhã eu vou”. Assumindo a proposição como verdadeira, assinale a **única situação impossível**:\n\n□ Fez bom tempo e ele foi\n□ Fez bom tempo e ele não foi\n□ Não fez bom tempo e ele foi\n□ Não fez bom tempo e ele não foi", resposta: "**“Fez bom tempo e ele não foi”** — o único caso em que a condicional é falsa (V → F). Todas as outras combinações são compatíveis com `p → q` verdadeira." },
+      { num: "3", ref: "§1.4", texto: "Qual é o menor número natural x que torna a sentença aberta “x/2 > π” verdadeira?", resposta: "**x = 7.** π ≈ 3,1416 → x > 6,283...; o menor natural é **7**." },
+      { num: "4", ref: "§2.1 · §10 · §9.4", texto: "Considere o código abaixo e responda:\n(a) Identifique os predicados (nome e aridade).\n(b) Determine o número de fatos, regras e cláusulas.\n(c) A consulta `?- selecionado(X).` lista um time **duplicado**. Proponha uma correção para que cada selecionado apareça uma única vez.", code: "time('5am, wood again', 2, 'mg').\ntime('Amigos do Mortandela', 3, 'mg').\ntime('C++ ou uma linguagem misteriosa?', 2, 'go').\ntime('Lone Wolves', 2, 'df').\ntime('Monkeys', 1, 'go').\ntime('Teorema de Offson', 1, 'df').\ntime('Teorema do Chinês Viajante', 3, 'df').\ntime('Torcida Pão de Alho', 1, 'mg').\n\ncampeao(X) :- time(X, 1, _).\n\nselecionado(X) :- campeao(X).\nselecionado(X) :- time(X, _, 'mg').", resposta: "(a) `time/3`, `campeao/1` e `selecionado/1`.\n\n(b) **8 fatos + 3 regras = 11 cláusulas** (regras: `campeao/1` e as 2 cláusulas de `selecionado/1`).\n\n(c) “Torcida Pão de Alho” é campeã **e** de mg → aparece nas duas cláusulas. Correção que evita a repetição:\n\n```prolog\nselecionado(X) :- campeao(X).\nselecionado(X) :- time(X, _, 'mg'), \\+ campeao(X).\n```\n\nAgora cada time sai uma única vez (campeões primeiro; depois os de mg que não são campeões)." },
+      { num: "5", ref: "§2.2 · §3.1", texto: "Considere os fatos abaixo. Determine o resultado das consultas (indicando o valor das variáveis, quando houver):\n(a) `?- p(b, a).`\n(b) `?- p(a, b).`\n(c) `?- g(X).`\n(d) `?- p(a, Y).`", code: "p(a, b).\np(a, c).\np(b).\n\ng(a).\ng(b).\ng(a, b).", resposta: "(a) **false** — o fato é `p(a, b)`; a ordem dos argumentos importa.\n\n(b) **true** — casa direto com `p(a, b)`.\n\n(c) **X = a ; X = b** — só valem os fatos `g/1`; `g(a, b)` tem aridade 2 e não casa.\n\n(d) **Y = b ; Y = c**." },
+      { num: "6", ref: "§4.0–4.2", texto: "Considere uma consulta composta e as quatro portas que controlam o fluxo. Descreva o cenário no qual a saída exibe as variáveis lógicas e seus valores e explique quando é possível digitar ponto-e-vírgula após o resultado e o que ele significa em termos de fluxo de controle.", resposta: "A saída mostra as variáveis atadas quando a consulta termina com **exit** e há variáveis livres na consulta (o listener imprime `X = valor`).\n\nO `;` após um sucesso pede **outra resposta**: provoca **redo** na última escolha (desfaz as atações locais e tenta a próxima cláusula/solução); quando não há mais, o fluxo termina em **fail** (`false`).\n\nPortas: **call** (inicia), **exit** (sucesso), **fail** (sem cláusula) e **redo** (retomada)." },
+      { num: "7", ref: "§9.4", texto: "No código dos estudantes:\n(a) implemente `tem_calouros/1` — disciplinas com calouros (semestre 1) matriculados;\n(b) implemente `turma_mista/1` — disciplinas com ao menos um estudante de **cada** curso;\n(c) implemente `software/0` — imprime todos os estudantes de Engenharia de Software, um por linha.", code: "estudante(ana, 3, 'Engenharia de Software').\nestudante(beto, 1, 'Engenharias').\nestudante(carlos, 4, 'Engenharia de Energia').\nestudante(diane, 2, 'Engenharias').\nestudante(euler, 1, 'Engenharias').\nestudante(fabio, 5, 'Engenharia de Software').\nestudante(gustavo, 8, 'Engenharia de Software').\nestudante(heitor, 7, 'Engenharia de Energia').\nestudante(ian, 3, 'Engenharias').\n\nmatricula('Cálculo 1', ana).\nmatricula('Cálculo 1', fabio).\nmatricula('Cálculo 1', diane).\nmatricula('Cálculo 1', euler).\nmatricula('Cálculo 1', gustavo).\nmatricula('Cálculo 1', ian).\n\nmatricula('IAL', beto).\nmatricula('IAL', diane).\nmatricula('IAL', euler).\n\nmatricula('APC', carlos).\nmatricula('APC', fabio).\nmatricula('APC', gustavo).\nmatricula('APC', ian).", resposta: "(a) `tem_calouros(D) :- matricula(D, E), estudante(E, 1, _).` → **Cálculo 1** (diane, euler, ian) e **IAL** (beto, euler).\n\n(b)\n```prolog\nturma_mista(D) :-\n    matricula(D, E1), estudante(E1, _, 'Engenharias'),\n    matricula(D, E2), estudante(E2, _, 'Engenharia de Software'),\n    matricula(D, E3), estudante(E3, _, 'Engenharia de Energia').\n```\n→ só **APC** (carlos = Energia; fabio/gustavo = SW; ian = Engenharias).\n\n(c)\n```prolog\nsoftware :-\n    estudante(E, _, 'Engenharia de Software'),\n    writeln(E),\n    fail.\nsoftware.\n```\n→ imprime **ana, fabio, gustavo**." },
+      { num: "8", ref: "§9.4", texto: "Árvore dos Simpsons: declare os fatos relativos à família (`male/1`, `female/1`, `father/2`, `mother/2`) e implemente as regras `uncle/2` (tio) e `grandmother/2` (avó).", resposta: "Fatos (conforme a figura da folha):\n```prolog\nmale(homer). male(bart). male(abraham).\nfemale(marge). female(lisa). female(maggie).\nfather(homer, bart).\nmother(marge, bart).\n% ... demais fatos da família\n```\n\nRegras:\n```prolog\nuncle(X, Y) :- (father(P, Y) ; mother(P, Y)), siblings(X, P).\ngrandmother(X, Y) :- mother(X, P), (father(P, Y) ; mother(P, Y)).\n```\n\nValide com consultas do tipo `?- grandmother(marge, lisa).`" },
+      { num: "9", ref: "§9.4", texto: "Implemente `distance/5`: distância percorrida S (em metros) em T segundos, partindo de I metros da origem, com velocidade V m/s e aceleração A m/s².", resposta: "```prolog\ndistance(I, V, A, T, S) :- S is I + V*T + A*T*T/2.\n```" },
+      { num: "10", ref: "§5.4 · §9.4", texto: "Implemente `divisores/2` (número de divisores positivos de N) usando `mod/2`; em seguida transforme-o em **função aritmética** e em **operador infixado sem associatividade**, de modo que valham: `?- 60 divisores X.` → `X = 12.` e `?- R is divisores(20).` → `R = 6.`", resposta: "```prolog\n:- use_module(library(arithmetic)).\n:- arithmetic_function(divisores/1).   % aridade = aridade do predicado − 1\n:- op(700, xfx, divisores).            % infixado, sem associatividade\n\ndivisores(N, X) :- divisores_(N, 1, 0, X).\ndivisores_(N, D, Acc, X) :-\n    D =< N,\n    (0 =:= N mod D -> NewAcc is Acc + 1 ; NewAcc = Acc),\n    NewD is D + 1,\n    divisores_(N, NewD, NewAcc, X).\ndivisores_(_, D, Acc, Acc) :- D > N.\n```" },
+      { num: "11", ref: "§3.4", texto: "`is_set/1` recebe uma lista de inteiros e retorna verdadeiro se todos os elementos são únicos. Descreva o comportamento da consulta `?- is_set(1, 2, 3).`", resposta: "**Erro:** `is_set` foi definido com **aridade 1**, mas a consulta tenta `is_set/3` (3 argumentos) — predicado inexistente. A chamada correta usa a lista: `?- is_set([1, 2, 3]).`" },
+      { num: "12", ref: "§3.4", texto: "Determine, sem executar, o resultado da consulta `?- X = Y, Y \\= Z, Z = W, X = a, W = b.` Compare com o listener e, se necessário, corrija a consulta para obter o esperado.", resposta: "A consulta **falha**: no momento de `Y \\= Z`, ambas ainda são variáveis livres e **duas variáveis sempre unificam** → `\\=` é falso.\n\nCorreção (instanciar antes):\n```prolog\n?- X = Y, Z = W, X = a, W = b, Y \\= Z.\n```\nAgora `a \\= b` → **true**." },
+      { num: "13", ref: "§3.4", texto: "O código abaixo deveria retornar verdadeiro quando X e Y têm a mesma paridade, mas `?- same_parity(2, 4).` retorna **falso**. Explique o problema e proponha uma correção.", code: "same_parity(X, Y) :-\n    mod(X, 2) = mod(Y, 2).", resposta: "O `=` apenas **unifica termos** — não avalia. `mod(2,2)` e `mod(4,2)` são estruturas diferentes, então a unificação falha.\n\nCorreção (comparar **valores**):\n```prolog\nsame_parity(X, Y) :- mod(X, 2) =:= mod(Y, 2).\n```" }
+    ]
+  },
+  {
+    id: "comb",
+    titulo: "Lista — Combinadores",
+    descricao: "Partes A–B · 6 questões · respostas comentadas",
+    itens: [
+      { num: "1", ref: "§8.3", texto: "Seja `p ↓ q = ¬p ∧ ¬q` (negação conjunta, ou NOR). Determine a proposição equivalente usando **apenas** o conectivo ↓:\n(a) `p ∧ q`\n(b) `p ∨ q`\n(c) `¬p`", resposta: "(a) `p ∧ q = (p ↓ p) ↓ (q ↓ q)`\n\n(b) `p ∨ q = (p ↓ q) ↓ (p ↓ q)`\n\n(c) `¬p = p ↓ p`\n\n*(A folha chama ↓ de “negação conjunta” na definição e de “negação disjunta” no enunciado — é o mesmo conectivo NOR.)*" },
+      { num: "2", ref: "§8.3 · §8.6", texto: "Sejam ⊕ e ⊙ tais que `p ⊕ q` é verdadeira **apenas** se p é F e q é V, e `p ⊙ q` é falsa se p é V ou q é F. Determine proposições equivalentes a `p ⊕ q` e `p ⊙ q` usando apenas:\n(a) negação e conjunção\n(b) negação conjunta (↓)\n(c) negação e condicional", resposta: "Ambos equivalem a **`¬p ∧ q`**:\n\n(a) `¬p ∧ q`\n\n(b) `¬p = p ↓ p` e `a ∧ b = (a ↓ a) ↓ (b ↓ b)` → `((p ↓ p) ↓ (p ↓ p)) ↓ (q ↓ q)`\n\n(c) `q → p ≡ ¬q ∨ p`; logo `¬(q → p) ≡ q ∧ ¬p ≡ ¬p ∧ q`" },
+      { num: "3", ref: "§8.3 · §8.6", texto: "Considere “x não é múltiplo de 3 e y é primo” (p = “x é múltiplo de 3”, q = “y é primo”).\n(a) escreva com os conectivos tradicionais;\n(b) escreva a **negação** em notação simbólica;\n(c) reescreva usando apenas a negação conjunta (↓);\n(d) reescreva usando apenas o conectivo fundamental de Schönfinkel.", resposta: "Proposição: **`¬p ∧ q`**.\n\n(a) `¬p ∧ q`\n\n(b) `¬(¬p ∧ q) ≡ p ∨ ¬q`\n\n(c) `¬p = p ↓ p` e `a ∧ b = (a ↓ a) ↓ (b ↓ b)` → `((p ↓ p) ↓ (p ↓ p)) ↓ (q ↓ q)`\n\n(d) Com `|^x`: `¬a = a |^x a` e `a ∨ b = ¬a |^x ¬b`; use De Morgan (`a ∧ b = ¬(¬a ∨ ¬b)`) e reescreva tudo com `|^x`." },
+      { num: "4", ref: "§8.4", texto: "Escreva os combinadores usando apenas S, K, I, C e B:\n(a) Blackbird: `B₁abcd = a(bcd)`\n(b) Dove: `Dabcd = ab(cd)`\n(c) Goldfinch: `Dabcd = ad(bc)` (a folha usa D por engano)\n(d) Owl: `Oab = b(ab)`", resposta: "(a) `B₁ = BBB`\n\n(b) `D = BB`\n\n(c) `G = BBC`\n\n(d) `O = SI`" },
+      { num: "5", ref: "§8.5", texto: "Aplique a redução-β enquanto for possível:\n(a) `S(K(S(K((S(KS))K))))abcde`\n(b) `S(K((S((SK)K))((SK)K)))ab`\n(c) `S(K((S(K(S((SK)K))))K))abc`", resposta: "(a) `abc(de)` — os `S(K...)` empilham composições.\n\n(b) `(ab)(ab)` — pois `(SK)K = I`, `SII = M` e `S(KM)ab = (KMb)(ab) = M(ab)`.\n\n(c) `c(ab)` — pois `(SK)K = I`, `S((SK)K) = SI`; com `Y = S(K(SI))`, vale `YK x = SI(Kx)`, logo `S(K(YK))abc = YK(ab)c = SI(K(ab))c = c(ab)`." },
+      { num: "6", ref: "§8.4", texto: "Na floresta: para quaisquer pássaros A e B existe um C com `Cx = A(Bx)`, e o tordo-imitador M existe (`Mx = xx`). Prove que existe um pássaro egocêntrico E tal que `EE = E`.", resposta: "Do 1º rumor: tomando `C` com `Cx = A(Mx)`, temos `CC = A(MC)` e, como `MC = CC` (pois `Mx = xx`), vale **`A(MC) = MC`** para todo A.\n\nAplique com **`A := M`**: `M(MC) = MC`. Mas `M(MC) = (MC)(MC)`, logo `(MC)(MC) = MC`.\n\nPortanto **`E := MC`** satisfaz `EE = E` — existe o pássaro egocêntrico." }
+    ]
   }
 ];
 
@@ -249,7 +332,27 @@ function mostrar(tela) {
   $("#tela-inicio").hidden = tela !== "inicio";
   $("#tela-prova").hidden = tela !== "prova";
   $("#tela-resultado").hidden = tela !== "resultado";
+  $("#tela-lista").hidden = tela !== "lista";
   window.scrollTo(0, 0);
+}
+
+function descrever(p) {
+  const cfg = p.pontosPartes || { A: 2, B: 3, C: 1 };
+  let n = 0, total = 0;
+  const partes = [];
+  ["A", "B", "C"].forEach((pt) => {
+    const itens = p["parte" + pt];
+    if (!itens) return;
+    const mc = itens.filter((i) => i.certa).length;
+    const ab = itens.length - mc;
+    const tipos = [];
+    if (mc) tipos.push(mc + " MC");
+    if (ab) tipos.push(ab + (ab > 1 ? " abertas" : " aberta") + " em CDU");
+    partes.push("Parte " + pt + ": " + tipos.join(" + ") + " (" + cfg[pt] + " pts cada)");
+    n += itens.length;
+    total += itens.length * cfg[pt];
+  });
+  return partes.join(" · ") + " · " + n + " questões, " + total + " pontos";
 }
 
 function montarInicio() {
@@ -258,7 +361,7 @@ function montarInicio() {
   PROVAS.forEach((p) => {
     const card = document.createElement("div");
     card.className = "prova-card";
-    card.innerHTML = "<h3>" + p.titulo + "</h3><p>Parte A: 12 múltipla escolha (2 pts) · Parte B: 2 abertas em CDU (3 pts) · 14 questões, 30 pontos</p>";
+    card.innerHTML = "<h3>" + p.titulo + "</h3><p>" + descrever(p) + "</p>";
     const btn = document.createElement("button");
     btn.className = "btn";
     btn.textContent = "Iniciar";
@@ -266,15 +369,77 @@ function montarInicio() {
     card.appendChild(btn);
     lista.appendChild(card);
   });
+
+  const box = $("#lista-listas");
+  box.innerHTML = "";
+  LISTAS.forEach((l) => {
+    const card = document.createElement("div");
+    card.className = "prova-card";
+    card.innerHTML = "<h3>" + l.titulo + "</h3><p>" + l.descricao + "</p>";
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.textContent = "Abrir lista";
+    btn.onclick = () => abrirLista(l.id);
+    card.appendChild(btn);
+    box.appendChild(card);
+  });
+}
+
+function abrirLista(id) {
+  const lista = LISTAS.find((l) => l.id === id);
+  $("#lista-nome").textContent = lista.titulo;
+  $("#lista-info").textContent = lista.descricao;
+  const box = $("#lista-questoes");
+  let html = "";
+  lista.itens.forEach((item, i) => {
+    const gabId = "gab-" + id + "-" + i;
+    html += '<div class="questao">';
+    html += '<div class="q-topo"><span class="q-label">' + item.num + '</span><span class="q-parte">' + (item.ref || "") + "</span></div>";
+    html += '<div class="q-texto">' + render(item.texto) + "</div>";
+    if (item.code) html += "<pre><code>" + esc(item.code) + "</code></pre>";
+    html += '<button type="button" class="btn secundario pequeno btn-gabarito" data-gab="' + gabId + '">Ver resposta comentada</button>';
+    html += '<div class="expl gabarito" id="' + gabId + '" hidden><b>Resposta comentada:</b> ' + render(item.resposta) + "</div>";
+    html += "</div>";
+  });
+  box.innerHTML = html;
+  box.querySelectorAll(".btn-gabarito").forEach((btn) => {
+    btn.onclick = () => {
+      const alvo = document.getElementById(btn.dataset.gab);
+      alvo.hidden = !alvo.hidden;
+      btn.textContent = alvo.hidden ? "Ver resposta comentada" : "Ocultar resposta";
+    };
+  });
+  mostrar("lista");
 }
 
 function iniciar(id) {
   const prova = PROVAS.find((p) => p.id === id);
+  const cfg = prova.pontosPartes || { A: 2, B: 3, C: 1 };
   const questoes = [];
-  prova.parteA.forEach((item, i) => questoes.push(Object.assign({}, item, { tipo: "A", label: "Q" + (i + 1), opcoes: [item.certa].concat(item.erradas), resposta: null, pontos: 2 })));
-  prova.parteB.forEach((item, i) => questoes.push(Object.assign({}, item, { tipo: "B", label: "Q" + (13 + i), resposta: "", pontos: 3 })));
-  estado = { prova, questoes };
+  let n = 0, total = 0;
+  ["A", "B", "C"].forEach((pt) => {
+    const itens = prova["parte" + pt];
+    if (!itens) return;
+    itens.forEach((item) => {
+      n++;
+      const tipo = item.certa ? "MC" : "NUM";
+      const q = Object.assign({}, item, {
+        tipo,
+        parte: pt,
+        label: "Q" + n,
+        resposta: tipo === "MC" ? null : "",
+        pontos: cfg[pt]
+      });
+      if (tipo === "MC") q.opcoes = [item.certa].concat(item.erradas);
+      questoes.push(q);
+      total += cfg[pt];
+    });
+  });
+  estado = { prova, questoes, total };
   $("#prova-nome").textContent = prova.titulo;
+  $("#prova-info").textContent = questoes.length + " questões · " + total + " pontos";
+  $("#total-pts").textContent = total;
+  $("#total-qs").textContent = questoes.length;
   renderQuestoes();
   mostrar("prova");
 }
@@ -284,10 +449,10 @@ function renderQuestoes() {
   let html = "";
   estado.questoes.forEach((q) => {
     html += '<div class="questao">';
-    html += '<div class="q-topo"><span class="q-label">' + q.label + '</span><span class="q-parte">Parte ' + q.tipo + " · " + q.pontos + " pts</span></div>";
+    html += '<div class="q-topo"><span class="q-label">' + q.label + '</span><span class="q-parte">Parte ' + q.parte + " · " + q.pontos + (q.pontos > 1 ? " pts" : " pt") + "</span></div>";
     html += '<div class="q-texto">' + render(q.q) + "</div>";
     if (q.code) html += "<pre><code>" + esc(q.code) + "</code></pre>";
-    if (q.tipo === "A") {
+    if (q.tipo === "MC") {
       html += '<div class="opcoes">';
       q.opcoes.forEach((op, i) => {
         const letra = String.fromCharCode(65 + i);
@@ -320,8 +485,8 @@ function renderQuestoes() {
 function calcular() {
   let pts = 0, acertos = 0;
   estado.questoes.forEach((q) => {
-    if (q.tipo === "A" && q.resposta === q.certa) { pts += 2; acertos++; }
-    else if (q.tipo === "B" && q.resposta !== "" && Number(q.resposta) === q.answer) { pts += 3; acertos++; }
+    if (q.tipo === "MC" && q.resposta === q.certa) { pts += q.pontos; acertos++; }
+    else if (q.tipo === "NUM" && q.resposta !== "" && Number(q.resposta) === q.answer) { pts += q.pontos; acertos++; }
   });
   return { pts, acertos };
 }
@@ -329,7 +494,7 @@ function calcular() {
 function atualizarPlacar() {
   const { pts, acertos } = calcular();
   $("#pontos").textContent = pts;
-  $("#nota").textContent = (pts / 30 * 10).toFixed(1).replace(".", ",");
+  $("#nota").textContent = (pts / estado.total * 10).toFixed(1).replace(".", ",");
   $("#acertos").textContent = acertos;
 }
 
@@ -337,12 +502,12 @@ function renderResultado() {
   const rev = $("#revisao");
   rev.innerHTML = "";
   estado.questoes.forEach((q) => {
-    const respondeu = q.tipo === "A" ? q.resposta !== null : q.resposta !== "";
-    const ok = q.tipo === "A" ? q.resposta === q.certa : (respondeu && Number(q.resposta) === q.answer);
+    const respondeu = q.tipo === "MC" ? q.resposta !== null : q.resposta !== "";
+    const ok = q.tipo === "MC" ? q.resposta === q.certa : (respondeu && Number(q.resposta) === q.answer);
     const classe = ok ? "ok" : "erro";
     const tag = ok ? '<span class="tag ok">ACERTOU</span>' : (respondeu ? '<span class="tag erro">ERROU</span>' : '<span class="tag nr">EM BRANCO</span>');
-    const sua = q.tipo === "A" ? (q.resposta === null ? "—" : q.resposta) : (q.resposta === "" ? "—" : q.resposta);
-    const certa = q.tipo === "A" ? q.certa : q.answer;
+    const sua = q.tipo === "MC" ? (q.resposta === null ? "—" : q.resposta) : (q.resposta === "" ? "—" : q.resposta);
+    const certa = q.tipo === "MC" ? q.certa : q.answer;
 
     let html = '<div class="rev-topo"><span class="q-label">' + q.label + "</span>" + tag + "</div>";
     html += '<div class="q-texto">' + render(q.q) + "</div>";
@@ -360,7 +525,7 @@ function renderResultado() {
 
 function corrigir() {
   const semResposta = estado.questoes.filter((q) =>
-    (q.tipo === "A" && q.resposta === null) || (q.tipo === "B" && q.resposta === "")
+    (q.tipo === "MC" && q.resposta === null) || (q.tipo === "NUM" && q.resposta === "")
   ).length;
   if (semResposta > 0 && !confirm("Há " + semResposta + " questão(ões) sem resposta. Corrigir mesmo assim?")) return;
   renderResultado();
@@ -370,6 +535,15 @@ function corrigir() {
 $("#btn-corrigir").onclick = corrigir;
 $("#btn-refazer").onclick = () => iniciar(estado.prova.id);
 $("#btn-inicio").onclick = () => { estado = null; mostrar("inicio"); };
+$("#btn-lista-voltar").onclick = () => mostrar("inicio");
+$("#btn-ver-todas").onclick = () => {
+  const gabs = document.querySelectorAll("#lista-questoes .gabarito");
+  const abrir = Array.from(gabs).some((g) => g.hidden);
+  gabs.forEach((g) => { g.hidden = !abrir; });
+  document.querySelectorAll("#lista-questoes .btn-gabarito").forEach((b) => {
+    b.textContent = abrir ? "Ocultar resposta" : "Ver resposta comentada";
+  });
+};
 
 montarInicio();
 mostrar("inicio");
