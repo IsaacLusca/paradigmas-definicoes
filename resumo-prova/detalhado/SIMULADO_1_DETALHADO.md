@@ -173,12 +173,12 @@ Verificado no SWI: `?- h(4, X).` → `X = 10`.
 
 ### Q8 — Quantas consultas **retornam verdadeiro**? → **C (2)**
 
-| Consulta | Substituindo e executando | Resultado |
-|---|---|---|
-| `?- 1 + 1 =:= 2.` | `=:=` calcula: `1+1` → `2`; `2 =:= 2` | **true** |
-| `?- 3 =:= 4.` | `3 =:= 4` | false |
-| `?- f(a) = f(b).` | `=` unifica: 2º arg `a` com `b` → não | false |
-| `?- X = 1, Y = 2, X \= Y.` | `X = 1`; `Y = 2`; `1 \= 2` (não unificam) | **true** |
+| Consulta                   | Substituindo e executando                 | Resultado |
+| -------------------------- | ----------------------------------------- | --------- |
+| `?- 1 + 1 =:= 2.`          | `=:=` calcula: `1+1` → `2`; `2 =:= 2`     | **true**  |
+| `?- 3 =:= 4.`              | `3 =:= 4`                                 | false     |
+| `?- f(a) = f(b).`          | `=` unifica: 2º arg `a` com `b` → não     | false     |
+| `?- X = 1, Y = 2, X \= Y.` | `X = 1`; `Y = 2`; `1 \= 2` (não unificam) | **true**  |
 
 São **2 verdadeiras**. Cuidado com o comando: `=:=` calcula; `=` só unifica (por isso `f(a) = f(b)` é false, mas `1+1 =:= 2` é true).
 
