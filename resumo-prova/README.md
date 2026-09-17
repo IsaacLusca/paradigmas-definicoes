@@ -7,7 +7,8 @@ Material de estudo para as provas de Paradigmas de Programação.
 ```
 resumo-prova/
 ├── estudo/
-│   └── RESUMO_PROVA_1.md      ← RESUMO GERAL ÚNICO para a Prova 1 (comece por aqui)
+│   ├── RESUMO_PROVA_1.md      ← RESUMO GERAL ÚNICO para a Prova 1 (comece por aqui)
+│   └── RESUMO_COMBINADORES.md ← resumo curto e direto de Combinadores (revisão rápida)
 ├── detalhado/                 ← explicação profunda (debug linha a linha + passo a passo)
 │   ├── SIMULADO_1_DETALHADO.md ... SIMULADO_4_DETALHADO.md
 │   └── LISTA_PL_DETALHADA.md / LISTA_COMBINADORES_DETALHADA.md
@@ -41,6 +42,7 @@ resumo-prova/
 - **Combinadores:** Introdução e Base SK (partes da antiga Prova 2).
 - **Não cai:** Cálculo Lambda e Haskell.
 
+> **Formato confirmado da prova: 10 múltipla escolha + 5 abertas em CDU** (sem escrita de código).
 > **Formato (avisado em aula): sem escrita de código** — no máximo código para analisar.
 > Simulados 1–3: Parte A (12 MC, 2 pts) + Parte B (2 abertas em CDU, 3 pts) = 30 pts.
 > Simulado 4: fiel à prova real — Parte A (10 MC, 2 pts) + Parte B (2 CDU, 2 pts) +

@@ -20,6 +20,10 @@
 > no máximo **código para analisar** (traço/resultado de consultas, contagem, reduções). Por isso os
 > **simulados** foram ajustados para o formato abaixo (12 MC + 2 abertas, 30 pts), cobrindo o mesmo
 > conteúdo da prova original.
+>
+> **Formato confirmado da prova (aviso novo):** serão **10 questões de múltipla escolha + 5 questões
+> abertas em CDU** (15 questões), **sem escrita de código**. Os Simulados 1–3 seguem o formato de treino
+> (12 MC + 2 CDU) e o **Simulado 4** reproduz a prova real aplicada — o estilo das questões é o mesmo.
 
 **Formato dos simulados (`resumo-prova/simulados/` e `simulador.html`):**
 
@@ -878,6 +882,9 @@ sobe: `X is 0 + (3-2) = 1` → **A** (`X = 1`).
 
 ## 8. Combinadores e Base SK (conteúdo da antiga Prova 2 que cai agora)
 
+> **Revisão rápida (sem tempo?):** [`RESUMO_COMBINADORES.md`](RESUMO_COMBINADORES.md) — só o que cai,
+> em uma página. Esta seção é a versão completa.
+
 **O que mais cai (confirmado na Prova 2 real — 704C60):**
 
 | Questão | Item | Resposta |
@@ -1231,6 +1238,7 @@ q(0).                 % fato  → cláusula 4
 ---
 
 **Materiais de apoio (só se quiser aprofundar — o estudo fecha por este arquivo):**
+- `resumo-prova/estudo/RESUMO_COMBINADORES.md` — **resumo curto de Combinadores** (1 página, revisão rápida)
 - `definicoes/02_programacao_logica/` — resumos detalhados das 6 aulas (com códigos)
 - `definicoes/03_combinadores/` — Introdução e Base SK
 - `resumo-prova/simulados/` — **4 simulados** no estilo da prova + gabaritos resolvidos
